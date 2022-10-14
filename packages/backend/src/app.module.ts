@@ -7,12 +7,13 @@ import { PassportModule } from '@nestjs/passport';
 import { LocalStrategy } from './auth/local.strategy';
 import { AuthController } from './auth/auth.controller';
 import { AuthService } from './auth/auth.service';
+import { JwtService } from '@nestjs/jwt';
 @Module({
   imports: [
     MongooseModule.forRoot('mongodb://localhost:27017/webshop'),
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     PassportModule],
   controllers: [UserController, AuthController],
-  providers: [UserService, LocalStrategy, AuthService],
+  providers: [UserService, LocalStrategy, AuthService, JwtService],
 })
 export class AppModule { }
