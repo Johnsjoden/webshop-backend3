@@ -2,7 +2,7 @@
   "name": "@webshop-types/shared",
   "version": "1.0.0",
   "description": "",
-  "main": "/src",
+  "main": "src/product-items.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
