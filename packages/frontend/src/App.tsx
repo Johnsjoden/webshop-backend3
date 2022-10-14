@@ -28,13 +28,15 @@ function App() {
     if (error) {
       return (<div>{error}</div>)
     } else if (products) {
-      return (<div>{
+      return (<div className="ProductList">{
         products.map((item) => {
           return (
-            <div>
-              <p key={3}>{item.image_url}</p>
+            <div className="ProductCard">
+              <img className="ProductImage"
+                src={item.image_url}
+                alt={item.title} />
               <p key={3}>{item.title}</p>
-              <p key={3}>{item.price}</p>
+              <p key={3}>{item.price}SEK</p>
             </div>)
         })
       }</div>)
@@ -46,9 +48,8 @@ function App() {
   return (
     <div className="App">
       <header>
-        {output()}
         <section>
-          <p>ITEM</p>
+          {output()}
         </section>
       </header>
 
