@@ -27,7 +27,10 @@ export class AuthService {
     this.logger.debug(user._doc._id)
     const payload = { username: userInfo.username, sub: userInfo.userId };
     return {
-      access_token: this.jwtService.sign(payload),
+      access_token: this.jwtService.sign(payload, {
+        secret: jwtConstants.secret,
+        expiresIn: "6000s",
+      }),
     };
   }
 }
