@@ -9,16 +9,13 @@ import { AuthController } from './auth/auth.controller';
 import { AuthService } from './auth/auth.service';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { jwtConstants } from './auth/constants';
+import { AuthModule } from './auth/auth.module';
+import { UserModule } from './user/user.modul';
 @Module({
   imports: [
+    UserModule,
+    AuthModule,
     MongooseModule.forRoot('mongodb://localhost:27017/webshop'),
-    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
-    PassportModule,
-    JwtModule.register({
-      secret: jwtConstants.secret,
-      signOptions: { expiresIn: '500000s' },
-    })],
-  controllers: [UserController, AuthController],
-  providers: [UserService, LocalStrategy, AuthService, JwtService],
+  ]
 })
 export class AppModule { }
