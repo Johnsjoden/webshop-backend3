@@ -58,13 +58,13 @@ export default function Detail() {
 
             <header className="header">
                 <div>
-                    <Link to="/" className='linkBackToStartPage'>Back to StartPage</Link>
+                    <Link to="/" className='link'>Back to StartPage</Link>
                 </div>
                 <div>
                     <h2>DetailPage</h2>
                 </div>
                 <div>
-                    <Link to="/loginPage" className='linkLogIn'>Log in</Link>
+                    <Link to="/user/login" className='link'>Log in</Link>
                 </div>
             </header>
             <section>
