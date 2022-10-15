@@ -33,7 +33,7 @@ export default function Detail() {
             return (<div className="ProductList">{
                 products.map((item) => {
                     return (
-                        <div className="ProductCard">
+                        <div className="ProductCardDetail">
                             <p key={3}>{item.title}</p>
                             <img className="ProductImage"
                                 src={item.image_url}

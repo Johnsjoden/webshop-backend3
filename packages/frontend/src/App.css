@@ -19,7 +19,17 @@ img {
   gap: 10px;
 }
 
-.ProductCard {
+.ProductCardStart {
   border: 2px solid #ddd;
   padding: 5px;
+}
+
+.ProductCardDetail {
+  border: 2px solid #ddd;
+  padding: 5px;
+}
+
+.ProductCardStart:hover {
+  cursor:pointer;
+  transform: scale(1.05); 
 }

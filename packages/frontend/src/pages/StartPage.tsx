@@ -38,7 +38,7 @@ export default function Start() {
             return (<div className="ProductList">{
                 products.map((item) => {
                     return (
-                        <div onClick={navigateToDetailPage} className="ProductCard">
+                        <div onClick={navigateToDetailPage} className="ProductCardStart">
                             <p key={3}>{item.title}</p>
                             <img className="ProductImage"
                                 src={item.image_url}
