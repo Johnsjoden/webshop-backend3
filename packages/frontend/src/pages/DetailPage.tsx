@@ -43,6 +43,7 @@ export default function Detail() {
                             <p key={3}>Description: {item.description}</p>
                             <p key={3}>Category: {item.category}</p>
                             <p key={3}>Manufacturer: {item.manufacturer}</p>
+                            <button className='buyButton'>BUY</button>
                         </div>)
                 })
             }</div>)
@@ -54,14 +55,22 @@ export default function Detail() {
     return (
 
         <div className="App">
-            <Link to="/">Back to StartPage</Link>
-            <header>
-                <h2>DetailPage</h2>
-                <section>
-                    {output()}
-                </section>
-                <br />
+
+            <header className="header">
+                <div>
+                    <Link to="/" className='linkBackToStartPage'>Back to StartPage</Link>
+                </div>
+                <div>
+                    <h2>DetailPage</h2>
+                </div>
+                <div>
+                    <Link to="/loginPage" className='linkLogIn'>Log in</Link>
+                </div>
             </header>
+            <section>
+                {output()}
+            </section>
+            <br />
         </div>
 
 
