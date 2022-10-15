@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import ProductItems from "@webshop-types/shared"
 import axios from 'axios';
 import '../App.css';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Detail() {
 
@@ -14,6 +15,7 @@ export default function Detail() {
 
     const [products, setProducts] = useState<ProductItems[]>([]);
     const [error, setError] = useState<string | undefined>();
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetchProducts()
@@ -50,14 +52,19 @@ export default function Detail() {
     }
 
     return (
+
         <div className="App">
+            <Link to="/">Back to StartPage</Link>
             <header>
+                <h2>DetailPage</h2>
                 <section>
                     {output()}
                 </section>
+                <br />
             </header>
-
         </div>
+
+
     );
 }
 

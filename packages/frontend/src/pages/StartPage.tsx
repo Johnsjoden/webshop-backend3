@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import ProductItems from "@webshop-types/shared"
 import axios from 'axios';
 import '../App.css';
+import { useNavigate } from 'react-router-dom';
 
 export default function Start() {
 
@@ -12,8 +13,14 @@ export default function Start() {
         return response.data
     }
 
+
     const [products, setProducts] = useState<ProductItems[]>([]);
     const [error, setError] = useState<string | undefined>();
+    const navigate = useNavigate();
+    const navigateToDetailPage = () => {
+        navigate("/detail");
+    }
+
 
     useEffect(() => {
         fetchProducts()
@@ -31,7 +38,7 @@ export default function Start() {
             return (<div className="ProductList">{
                 products.map((item) => {
                     return (
-                        <div className="ProductCard">
+                        <div onClick={navigateToDetailPage} className="ProductCard">
                             <p key={3}>{item.title}</p>
                             <img className="ProductImage"
                                 src={item.image_url}
@@ -48,6 +55,7 @@ export default function Start() {
     return (
         <div className="App">
             <header>
+                <h2>Startpage</h2>
                 <section>
                     {output()}
                 </section>
