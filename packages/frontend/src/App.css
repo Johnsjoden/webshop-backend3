@@ -35,7 +35,7 @@ img {
 .loginSpace {
   background-color: #008CBA;
   padding: 20px;
-  border-radius: 2px;
+  border-radius: 5px;
   color: white;
 }
 
@@ -47,6 +47,7 @@ img {
 .inputField:focus {
   outline: none !important;
   box-shadow: 0 0 10px #719ECE;
+  color:#008CBA;
 }
 
 ::placeholder { /* Most modern browsers support this now. */
