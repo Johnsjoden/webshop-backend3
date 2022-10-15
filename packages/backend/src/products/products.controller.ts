@@ -5,7 +5,7 @@ import { Model } from 'mongoose';
 import { diskStorage } from 'multer';
 import { Products, ProductsDocument } from './products.schema';
 import { ProductsService } from './products.service';
-
+import { randomUUID } from "crypto"
 @Controller('products')
 export class ProductsController {
     constructor(
@@ -24,7 +24,11 @@ export class ProductsController {
         FileInterceptor('image', {
             storage: diskStorage({
                 destination: './files',
-            }),
+                filename: function (req: any, file: { originalname: any }, cb: (arg0: null, arg1: any) => void) {
+                    let id = randomUUID()
+                    cb(null, `${id}${file.originalname}`)
+                }
+            })
         }),
     )
     async uploadedFile(@UploadedFile() file) {
