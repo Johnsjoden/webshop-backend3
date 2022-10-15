@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import ProductItems from "@webshop-types/shared"
 import axios from 'axios';
 import '../App.css';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Start() {
 
@@ -44,6 +44,7 @@ export default function Start() {
                                 src={item.image_url}
                                 alt={item.title} />
                             <p key={3}>Price: {item.price}SEK</p>
+                            <button className='buyButton'>BUY</button>
                         </div>)
                 })
             }</div>)
@@ -54,13 +55,19 @@ export default function Start() {
 
     return (
         <div className="App">
-            <header>
-                <h2>Startpage</h2>
-                <section>
-                    {output()}
-                </section>
+            <header className='header'>
+                <div>
+                </div>
+                <div>
+                    <h2>StartPage</h2>
+                </div>
+                <div>
+                    <Link to="/loginPage" className='linkLogIn'>Log in</Link>
+                </div>
             </header>
-
+            <section>
+                {output()}
+            </section>
         </div>
     );
 }
