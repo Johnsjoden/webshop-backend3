@@ -32,11 +32,11 @@ export default function Start() {
                 products.map((item) => {
                     return (
                         <div className="ProductCard">
+                            <p key={3}>{item.title}</p>
                             <img className="ProductImage"
                                 src={item.image_url}
                                 alt={item.title} />
-                            <p key={3}>{item.title}</p>
-                            <p key={3}>{item.price}SEK</p>
+                            <p key={3}>Price: {item.price}SEK</p>
                         </div>)
                 })
             }</div>)
