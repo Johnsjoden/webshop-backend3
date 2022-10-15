@@ -44,7 +44,6 @@ export default function Start() {
                                 src={item.image_url}
                                 alt={item.title} />
                             <p key={3}>Price: {item.price}SEK</p>
-                            <button className='buyButton'>BUY</button>
                         </div>)
                 })
             }</div>)
