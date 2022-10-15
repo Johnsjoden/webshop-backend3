@@ -62,7 +62,7 @@ export default function Start() {
                     <h2>StartPage</h2>
                 </div>
                 <div>
-                    <Link to="/loginPage" className='linkLogIn'>Log in</Link>
+                    <Link to="user/login" className='link'>Log in</Link>
                 </div>
             </header>
             <section>
