@@ -3,6 +3,7 @@ import './App.css';
 import StartPage from './pages/StartPage';
 import DetailPage from './pages/DetailPage';
 import LogInPage from './pages/LogInPage';
+import UserPage from './pages/UserPage';
 
 function App() {
 
@@ -13,7 +14,7 @@ function App() {
           <Route path="/" element={<StartPage />} />
           <Route path="/detail" element={<DetailPage />} />
           <Route path="/user/login" element={<LogInPage />} />
-          <Route path="/user/userinfo" element={<LogInPage />} />
+          <Route path="/user/userinfo" element={<UserPage />} />
         </Routes>
       </header>
 
