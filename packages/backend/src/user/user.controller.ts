@@ -12,7 +12,8 @@ export class UserController {
     constructor(private readonly userService: UserService, @InjectModel(User.name) private userModel: Model<UserDocument>) { }
     @Post()
     async create(@Body() user: User) {
-        const userAlreadyCreated = await this.userModel.findOne({ email: user.email })
+        const email = user.email.toLowerCase()
+        const userAlreadyCreated = await this.userModel.findOne({ email: email })
         this.logger.debug(userAlreadyCreated)
         if (userAlreadyCreated) {
             throw new HttpException('email already in use', 409);
