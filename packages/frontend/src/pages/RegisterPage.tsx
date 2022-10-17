@@ -18,7 +18,7 @@ export default function Register() {
             password
         }
         axios.post<User>("/user", user)
-        .then((response => console.log(response)))
+            .then((response => console.log(response)))
     }
 
 
@@ -34,36 +34,25 @@ export default function Register() {
                 <div>
 
 
-            </div>
-        </header>
-        <section>
-            <div className="login">
-                <div className="loginSpace">
-                    <div>
-                        <label>Username: </label>
-                        <input type="text" placeholder="Username" className="inputField" value={username} onChange={(e) => setUsername(e.target.value)}/>
-                    </div>
-                    <div>
-                        <label>Password: </label>
-                        <input type="text" placeholder="Password" className="inputField" value={password} onChange={(e) => setPassword(e.target.value)} />
-
                 </div>
             </header>
+
             <section>
                 <div className="login">
                     <div className="loginSpace">
                         <div>
                             <label>Username: </label>
-                            <input type="text" placeholder="Username" className="inputField" />
+                            <input type="text" placeholder="Username" className="inputField" value={username} onChange={(e) => setUsername(e.target.value)} />
                         </div>
                         <div>
                             <label>Password: </label>
-                            <input type="text" placeholder="Password" className="inputField" />
-                        </div>
+                            <input type="text" placeholder="Password" className="inputField" value={password} onChange={(e) => setPassword(e.target.value)} />
 
+                        </div>
+                        <button className='register' onClick={(e) => createUser(username, password)}>Register User</button>
                     </div>
-                    <button className='register' onClick={(e) => createUser(username, password)}>Register User</button>
                 </div>
             </section>
-        </div>)
+        </div>
+    )
 }
