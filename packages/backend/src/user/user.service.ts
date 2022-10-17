@@ -13,7 +13,7 @@ export class UserService {
     constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) { }
 
     async create(user: User): Promise<User> {
-        user.username = user.username.toLowerCase()
+        user.email = user.email.toLowerCase()
         user.password = await bcrypt.hash(user.password, 10);
         const result = await this.userModel.create(user)
         return result.save()
@@ -22,8 +22,8 @@ export class UserService {
         const result = await this.userModel.find().exec();
         return result
     }
-    async findOne(username: string): Promise<User> {
-        const result = await this.userModel.findOne({ username })
+    async findOne(email: string): Promise<User> {
+        const result = await this.userModel.findOne({ email })
         return result
     }
     async addToBasket(products: Products, _id: string): Promise<String> {

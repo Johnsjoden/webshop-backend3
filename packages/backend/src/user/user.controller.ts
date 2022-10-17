@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Logger, Patch, Post, UseGuards, Request } from '@nestjs/common';
+import { Body, Controller, Get, Logger, Patch, Post, UseGuards, Request, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { JwtAuthGuard } from 'src/auth/security/jwt-authguard';
@@ -11,8 +11,12 @@ export class UserController {
     private readonly logger = new Logger()
     constructor(private readonly userService: UserService, @InjectModel(User.name) private userModel: Model<UserDocument>) { }
     @Post()
-    create(@Body() user: User) {
-        /* const alreadyUser = this.userModel.find(user.username) */
+    async create(@Body() user: User) {
+        const userAlreadyCreated = await this.userModel.findOne({ email: user.email })
+        this.logger.debug(userAlreadyCreated)
+        if (userAlreadyCreated) {
+            throw new HttpException('email already in use', 409);
+        }
         return this.userService.create(user)
     }
     @Get()
