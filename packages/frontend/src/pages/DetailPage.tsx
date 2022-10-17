@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import ProductItems from "@webshop-types/shared"
+import {ProductItems} from "@webshop-types/shared"
 import axios from 'axios';
 import '../App.css';
 import { Link, useNavigate } from 'react-router-dom';
