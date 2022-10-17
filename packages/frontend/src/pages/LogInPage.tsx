@@ -71,6 +71,7 @@ export default function LogIn() {
                         {error}
                     </div>
                 </div>
+                <Link to="/register" className="linkRegister">Register a new user</Link>
             </div>
         </section>
     </div>)
