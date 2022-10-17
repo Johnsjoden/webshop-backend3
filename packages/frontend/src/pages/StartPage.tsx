@@ -78,7 +78,7 @@ export default function Start() {
                 </div>
                 <div>
                     <h2>StartPage</h2>
-                    {session ? (<p></p>) : (<p>Logged in as: {userName}</p>)}
+                    {/* {session ? (<p></p>) : (<p>Logged in as: {userName}</p>)} */}
                 </div>
                 <div>
                     {session ?

@@ -6,19 +6,18 @@ import "../App.css"
 
 export default function Register() {
 
-
     axios.defaults.baseURL = process.env.REACT_APP_TODO_API || "http://localhost:3000"
 
-    const [username, setUsername] = useState<string>("")
+    const [userEmail, setuserEmail] = useState<string>("")
     const [password, setPassword] = useState<string>("")
     const [error, setError] = useState<string>("");
 
     const navigate = useNavigate();
 
-    const createUser = async (username: string, password: string): Promise<void> => {
+    const createUser = async (userEmail: string, password: string): Promise<void> => {
         const user: User = {
-            username,
-            password
+            email: userEmail,
+            password: password
         }
         try {
             const response = await axios.post<User>("/user", user)
@@ -26,7 +25,7 @@ export default function Register() {
             navigate("/user/login")
         } catch (err) {
             if (err) {
-                setError("Username already exists")
+                setError("userEmail already exists")
             }
         }
     }
@@ -47,13 +46,13 @@ export default function Register() {
                 <div className="login">
                     <div className="loginSpace">
                         <div>
-                            <label>Username: </label>
+                            <label>Email: </label>
                             <input
                                 className="inputField"
                                 type="text"
-                                placeholder="Username"
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)} />
+                                placeholder="Email"
+                                value={userEmail}
+                                onChange={(e) => setuserEmail(e.target.value)} />
                         </div>
                         <div>
                             <label>Password: </label>
@@ -65,7 +64,7 @@ export default function Register() {
                                 onChange={(e) => setPassword(e.target.value)} />
                         </div>
                         <div className="buttonBox">
-                            <button className='buyButton' onClick={(e) => createUser(username, password)}>Create User</button>
+                            <button className='buyButton' onClick={(e) => createUser(userEmail, password)}>Create User</button>
                         </div>
                         <div>
                             {error}
