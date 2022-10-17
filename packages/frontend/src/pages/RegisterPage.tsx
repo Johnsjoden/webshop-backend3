@@ -11,12 +11,12 @@ export default function Register() {
     const [username, setUsername] = useState<string>("")
     const [password, setPassword] = useState<string>("")
 
-    const createUser = (username: string): void => {
+    const createUser = (username: string, password: string): void => {
         const user: User = {
             username,
             password
         }
-        axios.post<User>("/register", user)
+        axios.post<User>("/user", user)
         .then((response => console.log(response)))
     }
 
@@ -38,12 +38,13 @@ export default function Register() {
                 <div className="loginSpace">
                     <div>
                         <label>Username: </label>
-                        <input type="text" placeholder="Username" className="inputField" />
+                        <input type="text" placeholder="Username" className="inputField" value={username} onChange={(e) => setUsername(e.target.value)}/>
                     </div>
                     <div>
                         <label>Password: </label>
-                        <input type="text" placeholder="Password" className="inputField" />
+                        <input type="text" placeholder="Password" className="inputField" value={password} onChange={(e) => setPassword(e.target.value)} />
                     </div>
+                    <button className='register' onClick={(e) => createUser(username, password)}>Register User</button>
                 </div>
             </div>
         </section>
