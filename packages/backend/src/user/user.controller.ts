@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Logger, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Get, Logger, Patch, Post, UseGuards, Request } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { JwtAuthGuard } from 'src/auth/security/jwt-authguard';
 import { Products } from 'src/products/products.schema';
 import { User, UserDocument } from './user.schema';
 import { UserService } from './user.service';
@@ -18,24 +19,29 @@ export class UserController {
     user() {
         return this.userService.user()
     }
+    @UseGuards(JwtAuthGuard)
     @Patch("cart")
-    addToBasket(@Body() body: Products) {
-        return this.userService.addToBasket(body)
+    addToBasket(@Body() products: Products, @Request() req) {
+        return this.userService.addToBasket(products, req.user.userId)
     }
+    @UseGuards(JwtAuthGuard)
     @Patch("cart/registered")
-    addToRegistered() {
-        return this.userService.addToRegistered()
+    addToRegistered(@Request() req) {
+        return this.userService.addToRegistered(req.user.userId)
     }
+    @UseGuards(JwtAuthGuard)
     @Patch("cart/treated")
-    addToTreated() {
-        return this.userService.addToTreated()
+    addToTreated(@Request() req) {
+        return this.userService.addToTreated(req.user.userId)
     }
+    @UseGuards(JwtAuthGuard)
     @Patch("cart/underdelivery")
-    addToUnderdelivery() {
-        return this.userService.addToUnderdelivery()
+    addToUnderdelivery(@Request() req) {
+        return this.userService.addToUnderdelivery(req.user.userId)
     }
+    @UseGuards(JwtAuthGuard)
     @Patch("cart/delivered")
-    addToDelivered() {
-        return this.userService.addToDelivered()
+    addToDelivered(@Request() req) {
+        return this.userService.addToDelivered(req.user.userId)
     }
 }

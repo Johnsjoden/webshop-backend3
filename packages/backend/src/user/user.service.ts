@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 import { User, UserDocument } from './user.schema';
 import * as bcrypt from 'bcrypt';
 import { Products } from 'src/products/products.schema';
+import { randomUUID } from 'crypto';
 
 
 @Injectable()
@@ -25,33 +26,33 @@ export class UserService {
         const result = await this.userModel.findOne({ username })
         return result
     }
-    async addToBasket(products: Products): Promise<String> {
-        const result = await this.userModel.findOneAndUpdate({ _id: "634d39f09c1e8e3065af65e2" }, { $push: { "status.varukorg": { $each: products } } })
-        this.logger.debug(result)
+    async addToBasket(products: Products, _id: string): Promise<String> {
+        const result = await this.userModel.findOneAndUpdate({ _id: _id }, { $push: { "status.varukorg": { $each: products } } })
         return "ok"
     }
-    async addToRegistered(): Promise<String> {
-        const user = await this.userModel.findById("634d39f09c1e8e3065af65e2")
-        const productsRemovedFromCart = await this.userModel.findOneAndUpdate({ _id: "634d39f09c1e8e3065af65e2" }, { $set: { "status.varukorg": [] } })
-        const result = await this.userModel.findOneAndUpdate({ _id: "634d39f09c1e8e3065af65e2" }, { $push: { "status.registrerad": { $each: user.status.varukorg } } })
-        return "ok"
+    async addToRegistered(_id: string): Promise<String> {
+        const user = await this.userModel.findById(_id)
+        let id = randomUUID()
+        let kundvagn = {
+            _id: id,
+            products: user.status.varukorg
+        }
+        const productsRemovedFromCart = await this.userModel.findOneAndUpdate({ _id: _id }, { $set: { "status.varukorg": [] } })
+        return await this.userModel.findOneAndUpdate({ _id: _id }, { $push: { "status.registrerad": kundvagn } })
     }
-    async addToTreated(): Promise<String> {
-        const user = await this.userModel.findById("634d39f09c1e8e3065af65e2")
-        const productsRemovedFromCart = await this.userModel.findOneAndUpdate({ _id: "634d39f09c1e8e3065af65e2" }, { $set: { "status.registrerad": [] } })
-        const result = await this.userModel.findOneAndUpdate({ _id: "634d39f09c1e8e3065af65e2" }, { $push: { "status.behandlas": { $each: user.status.registrerad } } })
-        return "Ok"
+    async addToTreated(_id: string): Promise<String> {
+        const user = await this.userModel.findById(_id)
+        const productsRemovedFromCart = await this.userModel.findOneAndUpdate({ _id: _id }, { $set: { "status.registrerad": [] } })
+        return await this.userModel.findOneAndUpdate({ _id: _id }, { $push: { "status.behandlas": { $each: user.status.registrerad } } })
     }
-    async addToUnderdelivery(): Promise<String> {
-        const user = await this.userModel.findById("634d39f09c1e8e3065af65e2")
-        const productsRemovedFromCart = await this.userModel.findOneAndUpdate({ _id: "634d39f09c1e8e3065af65e2" }, { $set: { "status.behandlas": [] } })
-        const result = await this.userModel.findOneAndUpdate({ _id: "634d39f09c1e8e3065af65e2" }, { $push: { "status.underleverans": { $each: user.status.behandlas } } })
-        return "Ok"
+    async addToUnderdelivery(_id: string): Promise<String> {
+        const user = await this.userModel.findById(_id)
+        const productsRemovedFromCart = await this.userModel.findOneAndUpdate({ _id: _id }, { $set: { "status.behandlas": [] } })
+        return await this.userModel.findOneAndUpdate({ _id: _id }, { $push: { "status.underleverans": { $each: user.status.behandlas } } })
     }
-    async addToDelivered(): Promise<String> {
-        const user = await this.userModel.findById("634d39f09c1e8e3065af65e2")
-        const productsRemovedFromCart = await this.userModel.findOneAndUpdate({ _id: "634d39f09c1e8e3065af65e2" }, { $set: { "status.underleverans": [] } })
-        const result = await this.userModel.findOneAndUpdate({ _id: "634d39f09c1e8e3065af65e2" }, { $push: { "status.levererad": { $each: user.status.underleverans } } })
-        return "Ok"
+    async addToDelivered(_id: string): Promise<String> {
+        const user = await this.userModel.findById(_id)
+        const productsRemovedFromCart = await this.userModel.findOneAndUpdate({ _id: _id }, { $set: { "status.underleverans": [] } })
+        return await this.userModel.findOneAndUpdate({ _id: _id }, { $push: { "status.levererad": { $each: user.status.underleverans } } })
     }
 }
