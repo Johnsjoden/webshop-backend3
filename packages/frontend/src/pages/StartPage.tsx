@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import ProductItems from "@webshop-types/shared"
+import {ProductItems} from "@webshop-types/shared"
 import axios from 'axios';
 import '../App.css';
 import { Link, useNavigate } from 'react-router-dom';
@@ -62,6 +62,7 @@ export default function Start() {
                 </div>
                 <div>
                     <Link to="user/login" className='link'>Log in</Link>
+                    <Link to="/register" className='link'>Register</Link>
                 </div>
             </header>
             <section>
