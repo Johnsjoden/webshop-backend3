@@ -1,10 +1,14 @@
 import { User } from "@webshop-types/shared";
 import axios from "axios";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function LogIn() {
 
+    const [userName, setUserName] = useState<string>("");
+    const [userPassword, setUserPassword] = useState<string>("");
+    const [error, setError] = useState<string>("");
+    const navigate = useNavigate();
 
     const logInUser = async (userName: string, userPassword: string): Promise<void> => {
         console.log(userName, userPassword);
@@ -12,14 +16,18 @@ export default function LogIn() {
             username: userName,
             password: userPassword
         }
-        const response = await axios.post<any>("/auth/login", user)
-        const token = response.data.access_token;
-        console.log(token);
-        localStorage.setItem("backend3", token)
+        try {
+            const response = await axios.post<any>("/auth/login", user)
+            const token = response.data.access_token;
+            console.log(token);
+            localStorage.setItem("backend3", token)
+            navigate("/")
+        } catch (err) {
+            if (err) {
+                setError("Username or password is wrong")
+            }
+        }
     }
-
-    const [userName, setUserName] = useState<string>("");
-    const [userPassword, setUserPassword] = useState<string>("");
 
     return (<div className="App">
         <header className='header'>
@@ -58,6 +66,9 @@ export default function LogIn() {
                     </div>
                     <div className='buttonBox'>
                         <button className="buyButton" onClick={(e) => logInUser(userName, userPassword)}>Log In</button>
+                    </div>
+                    <div>
+                        {error}
                     </div>
                 </div>
             </div>
