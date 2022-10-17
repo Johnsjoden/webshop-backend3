@@ -5,15 +5,15 @@ import { Link, useNavigate } from "react-router-dom";
 
 export default function LogIn() {
 
-    const [userName, setUserName] = useState<string>("");
+    const [userEmail, setuserEmail] = useState<string>("");
     const [userPassword, setUserPassword] = useState<string>("");
     const [error, setError] = useState<string>("");
+
     const navigate = useNavigate();
 
-    const logInUser = async (userName: string, userPassword: string): Promise<void> => {
-        console.log(userName, userPassword);
+    const logInUser = async (userEmail: string, userPassword: string): Promise<void> => {
         const user: User = {
-            username: userName,
+            email: userEmail,
             password: userPassword
         }
         try {
@@ -24,7 +24,7 @@ export default function LogIn() {
             navigate("/")
         } catch (err) {
             if (err) {
-                setError("Username or password is wrong")
+                setError("userEmail or password is wrong")
             }
         }
     }
@@ -45,13 +45,13 @@ export default function LogIn() {
             <div className="login">
                 <div className="loginSpace">
                     <div>
-                        <label>Username: </label>
+                        <label>Email: </label>
                         <input
                             className="inputField"
                             type="text"
-                            placeholder="Username"
-                            value={userName}
-                            onChange={(e) => setUserName(e.target.value)}
+                            placeholder="Email"
+                            value={userEmail}
+                            onChange={(e) => setuserEmail(e.target.value)}
                         />
                     </div>
                     <div>
@@ -65,7 +65,7 @@ export default function LogIn() {
                         />
                     </div>
                     <div className='buttonBox'>
-                        <button className="buyButton" onClick={(e) => logInUser(userName, userPassword)}>Log In</button>
+                        <button className="buyButton" onClick={(e) => logInUser(userEmail, userPassword)}>Log In</button>
                     </div>
                     <div>
                         {error}
