@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Patch, Post, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { Model } from 'mongoose';
