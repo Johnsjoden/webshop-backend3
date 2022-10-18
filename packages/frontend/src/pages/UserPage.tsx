@@ -26,11 +26,14 @@ export default function UserInfo() {
             email: userEmail,
             adress: userAdress,
             password: ""
+
         }
+        console.log(user)
         try {
-            const response = await axios.post<User>("/user/updateuser", user)
+            const response = await axios.patch<User>("/user/updateuser", user, { headers: { "Authorization": "Bearer " + token } })
                 .then((response => console.log(response)))
             setRegisterMessage("Updated Information")
+            console.log("Updated Information")
         } catch (err) {
             if (err) {
                 setError("Something went wrong updating Information")
