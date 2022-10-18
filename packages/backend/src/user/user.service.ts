@@ -18,6 +18,18 @@ export class UserService {
         const result = await this.userModel.create(user)
         return result.save()
     }
+    async updateUser(user: User, _id: string): Promise<String> {
+        user.name = user.name.toLowerCase()
+        user.email = user.email.toLowerCase()
+        user.phoneNumber = user.phoneNumber.toLowerCase()
+        user.adress = user.adress.toLowerCase()
+        await this.userModel.findOneAndUpdate({ _id: _id }, { name: user.name })
+        await this.userModel.findOneAndUpdate({ _id: _id }, { email: user.email })
+        await this.userModel.findOneAndUpdate({ _id: _id }, { phoneNumber: user.phoneNumber })
+        await this.userModel.findOneAndUpdate({ _id: _id }, { adress: user.adress })
+        return "ok"
+    }
+
     async user(): Promise<User[]> {
         const result = await this.userModel.find().exec();
         return result

@@ -1,6 +1,6 @@
 export default interface User {
     email: string,
-    password: string,
+    password?: string,
     name?: string,
     phonenumber?: string,
     adress?: string

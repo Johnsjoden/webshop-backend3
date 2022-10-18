@@ -13,9 +13,13 @@ export default function UserInfo() {
     const [registerMessage, setRegisterMessage] = useState<string>("");
     const [session, setSession] = useState<boolean>(true);
 
+    const token = localStorage.getItem('backend3')
 
-
-    const updateUserInfo = async (userFullName: string, userPhonenumber: string, userEmail: string, userAdress: string): Promise<void> => {
+    const updateUserInfo = async (
+        userFullName: string,
+        userPhonenumber: string,
+        userEmail: string,
+        userAdress: string): Promise<void> => {
         const user: User = {
             name: userFullName,
             phonenumber: userPhonenumber,
@@ -24,7 +28,7 @@ export default function UserInfo() {
             password: ""
         }
         try {
-            const response = await axios.post<User>("/user", user)
+            const response = await axios.post<User>("/user/updateuser", user)
                 .then((response => console.log(response)))
             setRegisterMessage("Updated Information")
         } catch (err) {
@@ -35,7 +39,7 @@ export default function UserInfo() {
     }
 
     const fetchUser = async (): Promise<void> => {
-        const token = localStorage.getItem('backend3')
+
         try {
             const response = await axios.get<any>("/auth/profile", { headers: { "Authorization": "Bearer " + token } })
             setSession(false)
@@ -109,6 +113,7 @@ export default function UserInfo() {
                     <button className="buyButton" onClick={(e) => updateUserInfo(userFullName, userPhonenumber, userEmail, userAdress)}>Update</button>
                     <div>
                         {registerMessage}
+                        {error}
                     </div>
                 </div>
                 <div className="loginSpace">
