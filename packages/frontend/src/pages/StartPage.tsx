@@ -10,7 +10,6 @@ export default function Start() {
     //test
     const [products, setProducts] = useState<ProductItems[]>([]);
     const [error, setError] = useState<string | undefined>();
-    const [userName, setUserName] = useState<string>("");
     const [session, setSession] = useState<boolean>(true);
 
     const navigate = useNavigate();
@@ -27,10 +26,7 @@ export default function Start() {
         const token = localStorage.getItem('backend3')
         try {
             const response = await axios.get<any>("/auth/profile", { headers: { "Authorization": "Bearer " + token } })
-            setUserName(response.data.username)
             setSession(false)
-            console.log(session)
-            console.log(response.data.username)
         } catch (err) {
             console.log("Something went wrong fetching user", err)
         }
@@ -78,7 +74,6 @@ export default function Start() {
                 </div>
                 <div>
                     <h2>StartPage</h2>
-                    {/* {session ? (<p></p>) : (<p>Logged in as: {userName}</p>)} */}
                 </div>
                 <div>
                     {session ?
@@ -90,6 +85,9 @@ export default function Start() {
                                 setSession(true);
                             }}
                             className='link'>Log out</Link>)}
+                </div>
+                <div>
+                    {session ? (<></>) : (<Link className="link" to="user/userinfo">Profile</Link>)}
                 </div>
             </header>
             <section>
