@@ -33,8 +33,13 @@ export class UserService {
     async addToRegistered(_id: string): Promise<String> {
         const user = await this.userModel.findById(_id)
         let id = randomUUID()
+        let totalPrice: number = 0
+        user.status.varukorg.forEach(item => {
+            totalPrice += item.price
+        })
         let kundvagn = {
             _id: id,
+            totalPrice: totalPrice,
             products: user.status.varukorg
         }
         const productsRemovedFromCart = await this.userModel.findOneAndUpdate({ _id: _id }, { $set: { "status.varukorg": [] } })

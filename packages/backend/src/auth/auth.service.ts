@@ -27,7 +27,7 @@ export class AuthService {
     return {
       access_token: this.jwtService.sign(payload, {
         secret: jwtConstants.secret,
-        expiresIn: "600000s",
+        expiresIn: "6000s",
       }),
     };
   }
