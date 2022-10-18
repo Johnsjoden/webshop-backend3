@@ -9,7 +9,6 @@ export class AuthController {
     @UseGuards(AuthGuard('local'))
     @Post('/login')
     async login(@Request() req) {
-        console.log("2222")
         return this.authService.login(req.user)
     }
     @UseGuards(JwtAuthGuard)

@@ -5,5 +5,7 @@ export class kundvagn extends Document {
     @Prop()
     _id: string
     @Prop()
+    totalPrice: number
+    @Prop()
     products: []
 }

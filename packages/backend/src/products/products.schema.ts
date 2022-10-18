@@ -16,7 +16,7 @@ export class Products {
     @Prop({ required: true })
     weight: string
     @Prop({ required: true })
-    price: string;
+    price: number;
     @Prop({ required: true })
     manufacturer: string
 }
