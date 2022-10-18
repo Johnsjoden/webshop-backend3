@@ -20,6 +20,11 @@ export class UserController {
         }
         return this.userService.create(user)
     }
+    @Patch('updateuser')
+    async updateUser(@Body() user: User, @Request() req) {
+        return this.userService.updateUser(user, req.user.userId)
+    }
+
     @Get()
     user() {
         return this.userService.user()
