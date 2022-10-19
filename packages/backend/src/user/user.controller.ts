@@ -25,10 +25,10 @@ export class UserController {
     async updateUser(@Body() user: User, @Request() req) {
         return this.userService.updateUser(user, req.user.userId)
     }
-
+    @UseGuards(JwtAuthGuard)
     @Get()
-    user() {
-        return this.userService.user()
+    async finduser(@Request() req) {
+        return this.userService.finduser(req.user.userId)
     }
     @UseGuards(JwtAuthGuard)
     @Patch("cart")
