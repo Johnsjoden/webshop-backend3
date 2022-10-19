@@ -16,7 +16,7 @@ export default function UserInfo() {
     const [userUpdatedPhone, setUserUpdatedPhone] = useState<string>("");
     const [userUpdatedEmail, setUserUpdatedEmail] = useState<string>("");
     const [userUpdatedAdress, setUserUpdatedAdress] = useState<string>("");
-
+    const [userUpdated, setUserUpdated] = useState<User[]>([]);
 
     const token = localStorage.getItem('backend3')
 
