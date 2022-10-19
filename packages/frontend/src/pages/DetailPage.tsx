@@ -31,6 +31,7 @@ export default function Detail() {
 
     const [email, setEmail] = useState<string>("");
     const [session, setSession] = useState<boolean>(true);
+    const [cartProducts, setCartProducts] = useState<ProductItems[]>([]);
 
     const token = localStorage.getItem('backend3')
     // console.log(token)
@@ -61,19 +62,49 @@ export default function Detail() {
             manufacturer: item.manufacturer
         }]
         try {
-            const response = await axios.patch<User>("user/cart", productItem, { headers: { "Authorization": "Bearer " + token } })
-            setCartProducts(response.data)
-            // console.log(cartProducts?.status?.varukorg)
-            // console.log(response.data)
+        
+    const [cartProducts, setCartProducts] = useState<User>()
+
+            const response = await axios.patch<any>("user/cart", productItem, { headers: { "Authorization": "Bearer " + token } })
+            setCartProducts(response.data.status.varukorg)
+            console.log("Cart 0", response.data.status.varukorg[0])
+            console.log("Cart 0 Category", response.data.status.varukorg[0].category)
+            console.log("Carts", response.data.status.varukorg)
+            // console.log("Carts Length", response.data.status.varukorg.length())
         } catch (err) {
             console.log(err)
         }
 
+
     }
 
-    const [cartProducts, setCartProducts] = useState<User>()
-
-
+    const cartItems = () => {
+        if (error) {
+            return (<div>{error}</div>)
+        } else if (cartProducts) {
+            return (
+                <>
+                    <h2>Varukorg</h2>
+                    <div className="ProductList">{
+                        cartProducts.map((item, index) => {
+                            return (
+                                <div key={index} className="ProductCardDetail">
+                                    <p>{item.title}</p>
+                                    <p >Price: {item.price}SEK</p>
+                                    <p >Weight: {item.weight}KG</p>
+                                    <p >Description: {item.description}</p>
+                                    <p >Category: {item.category}</p>
+                                    <p >Manufacturer: {item.manufacturer}</p>
+                                </div>)
+                        })
+                    }
+                    </div>
+                </>
+            )
+        } else {
+            (<div>'Something went wrong fetching my products...'</div>)
+        }
+    }
 
     const output = () => {
         if (error) {
@@ -91,7 +122,7 @@ export default function Detail() {
                             <p >Weight: {item.weight}KG</p>
                             <p >Description: {item.description}</p>
                             <p >Category: {item.category}</p>
-                            <p key={3}>Manufacturer: {item.manufacturer}</p>
+                            <p >Manufacturer: {item.manufacturer}</p>
                             <button className='buyButton' onClick={() => addToCart(item)}>Add to cart</button>
                         </div>)
                 })
@@ -125,6 +156,10 @@ export default function Detail() {
             <section>
                 {output()}
             </section>
+
+            <div>
+                {cartItems()}
+            </div>
             <br />
         </div>
 
