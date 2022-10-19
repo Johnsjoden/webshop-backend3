@@ -7,7 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 export default function Detail() {
 
     axios.defaults.baseURL = process.env.REACT_APP_TODO_API || "http://localhost:3000"
-    //patrik
+
 
     const fetchProducts = async (): Promise<ProductItems[]> => {
         const response = await axios.get<ProductItems[]>("/products")
@@ -62,9 +62,6 @@ export default function Detail() {
             manufacturer: item.manufacturer
         }]
         try {
-        
-    const [cartProducts, setCartProducts] = useState<User>()
-
             const response = await axios.patch<any>("user/cart", productItem, { headers: { "Authorization": "Bearer " + token } })
             setCartProducts(response.data.status.varukorg)
             console.log("Cart 0", response.data.status.varukorg[0])
@@ -74,7 +71,6 @@ export default function Detail() {
         } catch (err) {
             console.log(err)
         }
-
 
     }
 
@@ -166,4 +162,3 @@ export default function Detail() {
 
     );
 }
-
