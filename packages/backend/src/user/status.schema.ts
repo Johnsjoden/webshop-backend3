@@ -1,16 +1,17 @@
 import { Prop } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { Cart } from './cart.schema';
+import { Products } from 'src/products/products.schema';
+import { kundvagn } from './kundvagn.schema';
 
 export class Status extends Document {
-    @Prop({ type: Cart, default: { cart: Cart} })
-    cart: Cart
-    @Prop({ type: Cart })
-    register: Cart
-    @Prop({ type: Cart })
-    treated: Cart
-    @Prop({ type: Cart })
-    underDelivery: Cart
-    @Prop({ type: Cart })
-    delivered: Cart
+    @Prop({ type: Products })
+    varukorg: Products[]
+    @Prop({ type: kundvagn })
+    registrerad: kundvagn
+    @Prop({ type: kundvagn })
+    behandlas: kundvagn
+    @Prop({ type: kundvagn })
+    underleverans: kundvagn
+    @Prop({ type: kundvagn })
+    levererad: kundvagn
 }
