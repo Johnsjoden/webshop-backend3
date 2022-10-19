@@ -12,6 +12,8 @@ export default function Register() {
     const [password, setPassword] = useState<string>("")
     const [error, setError] = useState<string>("");
 
+
+
     const navigate = useNavigate();
 
     const createUser = async (userEmail: string, password: string): Promise<void> => {

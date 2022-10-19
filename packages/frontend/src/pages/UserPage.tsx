@@ -12,6 +12,11 @@ export default function UserInfo() {
     const [error, setError] = useState<string>("");
     const [registerMessage, setRegisterMessage] = useState<string>("");
     const [session, setSession] = useState<boolean>(true);
+    const [userUpdatedName, setUserUpdatedName] = useState<string>("");
+    const [userUpdatedPhone, setUserUpdatedPhone] = useState<string>("");
+    const [userUpdatedEmail, setUserUpdatedEmail] = useState<string>("");
+    const [userUpdatedAdress, setUserUpdatedAdress] = useState<string>("");
+
 
     const token = localStorage.getItem('backend3')
 
@@ -26,10 +31,13 @@ export default function UserInfo() {
             email: userEmail,
             adress: userAdress,
         }
-        console.log(user)
+
         try {
-            const response = await axios.patch<User>("/user/updateuser", user, { headers: { "Authorization": "Bearer " + token } })
-                .then((response => console.log(response)))
+            const response = await axios.patch<any>("/user/updateuser", user, { headers: { "Authorization": "Bearer " + token } })
+            setUserUpdatedName(response.data.name)
+            setUserUpdatedPhone(response.data.phonenumber)
+            setUserUpdatedEmail(response.data.email)
+            setUserUpdatedAdress(response.data.adress)
             setRegisterMessage("Updated Information")
 
         } catch (err) {
@@ -42,7 +50,12 @@ export default function UserInfo() {
     const fetchUser = async (): Promise<void> => {
 
         try {
-            const response = await axios.get<any>("/auth/profile", { headers: { "Authorization": "Bearer " + token } })
+            const response = await axios.get<any>("/user", { headers: { "Authorization": "Bearer " + token } })
+            console.log("FetchUser", response)
+            setUserUpdatedName(response.data.name)
+            setUserUpdatedPhone(response.data.phonenumber)
+            setUserUpdatedEmail(response.data.email)
+            setUserUpdatedAdress(response.data.adress)
             setSession(false)
         } catch (err) {
             console.log("Something went wrong fetching user", err)
@@ -51,7 +64,7 @@ export default function UserInfo() {
 
     useEffect(() => {
         fetchUser()
-    })
+    }, [])
 
     return (<div className="App">
         <header className='header'>
@@ -68,11 +81,11 @@ export default function UserInfo() {
         <section>
             <div className="login">
                 <div className="loginSpace">
-                    <section>
-                        <div>Current Name: </div>
-                        <div>Current Phonenumber: </div>
-                        <div>Current Email: </div>
-                        <div>Current Adress: </div>
+                    <section className="userinformation">
+                        <div><b>Name:</b> {userUpdatedName}</div>
+                        <div><b>Phonenumber:</b> {userUpdatedPhone}</div>
+                        <div><b>Email:</b> {userUpdatedEmail}</div>
+                        <div><b>Adress:</b> {userUpdatedAdress}</div>
                     </section>
                     <h2>Update your information</h2>
                     <div>

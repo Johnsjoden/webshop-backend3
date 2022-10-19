@@ -26,10 +26,10 @@ export class UserService {
 
     }
 
-    async user(): Promise<User[]> {
-        const result = await this.userModel.find().exec();
-        return result
+    async finduser(_id: string): Promise<User> {
+        return await this.userModel.findOne({ _id: _id }).exec();
     }
+
     async findOne(email: string): Promise<User> {
         const result = await this.userModel.findOne({ email })
         return result
