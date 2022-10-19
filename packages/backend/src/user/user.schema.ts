@@ -12,7 +12,7 @@ export class User {
     password: string
     @Prop()
     name: string;
-    @Prop({ type: Status })
+    @Prop({ type: Status, default: { cart: { products: [] } } })
     status: Status
     @Prop()
     phoneNumber: string
