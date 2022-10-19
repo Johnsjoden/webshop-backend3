@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import {ProductItems, User} from "@webshop-types/shared"
+import { ProductItems, User } from "@webshop-types/shared"
 import axios from 'axios';
 import '../App.css';
 import { Link, useNavigate } from 'react-router-dom';
@@ -7,7 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 export default function Detail() {
 
     axios.defaults.baseURL = process.env.REACT_APP_TODO_API || "http://localhost:3000"
-
+    //patrik
 
     const fetchProducts = async (): Promise<ProductItems[]> => {
         const response = await axios.get<ProductItems[]>("/products")
@@ -34,8 +34,8 @@ export default function Detail() {
 
     const token = localStorage.getItem('backend3')
     // console.log(token)
-    
-    const fetchUser = async (): Promise<void> => {    
+
+    const fetchUser = async (): Promise<void> => {
         try {
             const response = await axios.get<any>("/auth/profile", { headers: { "Authorization": "Bearer " + token } })
             setEmail(response.data.email)
@@ -43,15 +43,15 @@ export default function Detail() {
             // console.log(session)
             // console.log(response.data)
             // console.log("userId: ", response.data.userId)
-            
+
         } catch (err) {
             console.log("Something went wrong fetching user", err)
         }
     }
 
-    const addToCart = async (item: ProductItems): Promise <void> => {
+    const addToCart = async (item: ProductItems): Promise<void> => {
         // console.log("Add to cart...?", item)
-        
+
         const productItem: ProductItems[] = [{
             description: item.description,
             title: item.title,
@@ -60,15 +60,15 @@ export default function Detail() {
             price: item.price,
             manufacturer: item.manufacturer
         }]
-        try{
+        try {
             const response = await axios.patch<User>("user/cart", productItem, { headers: { "Authorization": "Bearer " + token } })
             setCartProducts(response.data)
-            console.log(cartProducts?.status?.varukorg)
-            console.log(response.data)
-        } catch(err){
+            // console.log(cartProducts?.status?.varukorg)
+            // console.log(response.data)
+        } catch (err) {
             console.log(err)
         }
-        
+
     }
 
     const [cartProducts, setCartProducts] = useState<User>()
