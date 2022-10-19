@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import {ProductItems, User} from "@webshop-types/shared"
+import { ProductItems, User } from "@webshop-types/shared"
 import axios from 'axios';
 import '../App.css';
 import { Link, useNavigate } from 'react-router-dom';
@@ -31,11 +31,12 @@ export default function Detail() {
 
     const [email, setEmail] = useState<string>("");
     const [session, setSession] = useState<boolean>(true);
+    const [cartProducts, setCartProducts] = useState<ProductItems[]>([]);
 
     const token = localStorage.getItem('backend3')
     // console.log(token)
-    
-    const fetchUser = async (): Promise<void> => {    
+
+    const fetchUser = async (): Promise<void> => {
         try {
             const response = await axios.get<any>("/auth/profile", { headers: { "Authorization": "Bearer " + token } })
             setEmail(response.data.email)
@@ -43,15 +44,15 @@ export default function Detail() {
             // console.log(session)
             // console.log(response.data)
             // console.log("userId: ", response.data.userId)
-            
+
         } catch (err) {
             console.log("Something went wrong fetching user", err)
         }
     }
 
-    const addToCart = async (item: ProductItems): Promise <void> => {
+    const addToCart = async (item: ProductItems): Promise<void> => {
         // console.log("Add to cart...?", item)
-        
+
         const productItem: ProductItems[] = [{
             description: item.description,
             title: item.title,
@@ -60,20 +61,46 @@ export default function Detail() {
             price: item.price,
             manufacturer: item.manufacturer
         }]
-        try{
-            const response = await axios.patch<User>("user/cart", productItem, { headers: { "Authorization": "Bearer " + token } })
-            setCartProducts(response.data)
-            console.log(cartProducts?.status?.varukorg)
-            console.log(response.data)
-        } catch(err){
+        try {
+            const response = await axios.patch<any>("user/cart", productItem, { headers: { "Authorization": "Bearer " + token } })
+            setCartProducts(response.data.status.varukorg)
+            console.log("Cart 0", response.data.status.varukorg[0])
+            console.log("Cart 0 Category", response.data.status.varukorg[0].category)
+            console.log("Carts", response.data.status.varukorg)
+            // console.log("Carts Length", response.data.status.varukorg.length())
+        } catch (err) {
             console.log(err)
         }
-        
+
     }
 
-    const [cartProducts, setCartProducts] = useState<User>()
-
-
+    const cartItems = () => {
+        if (error) {
+            return (<div>{error}</div>)
+        } else if (cartProducts) {
+            return (
+                <>
+                    <h2>Varukorg</h2>
+                    <div className="ProductList">{
+                        cartProducts.map((item, index) => {
+                            return (
+                                <div key={index} className="ProductCardDetail">
+                                    <p>{item.title}</p>
+                                    <p >Price: {item.price}SEK</p>
+                                    <p >Weight: {item.weight}KG</p>
+                                    <p >Description: {item.description}</p>
+                                    <p >Category: {item.category}</p>
+                                    <p >Manufacturer: {item.manufacturer}</p>
+                                </div>)
+                        })
+                    }
+                    </div>
+                </>
+            )
+        } else {
+            (<div>'Something went wrong fetching my products...'</div>)
+        }
+    }
 
     const output = () => {
         if (error) {
@@ -91,7 +118,7 @@ export default function Detail() {
                             <p >Weight: {item.weight}KG</p>
                             <p >Description: {item.description}</p>
                             <p >Category: {item.category}</p>
-                            <p key={3}>Manufacturer: {item.manufacturer}</p>
+                            <p >Manufacturer: {item.manufacturer}</p>
                             <button className='buyButton' onClick={() => addToCart(item)}>Add to cart</button>
                         </div>)
                 })
@@ -125,6 +152,10 @@ export default function Detail() {
             <section>
                 {output()}
             </section>
+
+            <div>
+                {cartItems()}
+            </div>
             <br />
         </div>
 
