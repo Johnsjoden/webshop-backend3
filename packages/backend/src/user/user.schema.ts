@@ -15,7 +15,7 @@ export class User {
     @Prop({ type: Status })
     status: Status
     @Prop()
-    phoneNumber: string
+    phonenumber: string
     @Prop()
     adress: string;
 }
