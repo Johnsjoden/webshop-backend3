@@ -1,7 +1,9 @@
+// import Kundvagn from "./kundvagn"
+
 export default interface User {
     email: string,
-    password: string,
+    password?: string,
     name?: string,
-    phoneNumber?: string,
-    adress?: string
+    phonenumber?: string,
+    adress?: string,
 }

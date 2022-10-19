@@ -21,13 +21,21 @@ export class UserController {
         return this.userService.create(user)
     }
     @UseGuards(JwtAuthGuard)
+
     @Delete("cart/delete")
     deleteCart(@Request() req) {
         return this.userService.deleteCart(req.user.userId)
     }
+
+    @Patch('updateuser')
+    async updateUser(@Body() user: User, @Request() req) {
+        return this.userService.updateUser(user, req.user.userId)
+    }
+    @UseGuards(JwtAuthGuard)
+
     @Get()
-    user() {
-        return this.userService.user()
+    async finduser(@Request() req) {
+        return this.userService.finduser(req.user.userId)
     }
     @UseGuards(JwtAuthGuard)
     @Patch("cart")

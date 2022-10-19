@@ -15,8 +15,8 @@ export class User {
     @Prop({ type: Status, default: { cart: { products: [] } } })
     status: Status
     @Prop()
-    phoneNumber: string
+    phonenumber: string
     @Prop()
-    adress: number;
+    adress: string;
 }
 export const UserSchema = SchemaFactory.createForClass(User);

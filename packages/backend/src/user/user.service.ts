@@ -18,14 +18,23 @@ export class UserService {
         const result = await this.userModel.create(user)
         return result.save()
     }
-    async user(): Promise<User[]> {
-        const result = await this.userModel.find().exec();
-        return result
+    async updateUser(user: User, _id: string): Promise<User> {
+        user.name = user.name.toLowerCase()
+        user.email = user.email.toLowerCase()
+        user.adress = user.adress.toLowerCase()
+        return await this.userModel.findOneAndUpdate({ _id: _id }, user, { new: true })
+
     }
+
+    async finduser(_id: string): Promise<User> {
+        return await this.userModel.findOne({ _id: _id }).exec();
+    }
+
     async findOne(email: string): Promise<User> {
         const result = await this.userModel.findOne({ email })
         return result
     }
+
     async addToBasket(products: Products[], _id: string): Promise<String> {
         const user = await this.userModel.findOne({ _id: _id })
         const id = randomUUID()
@@ -52,8 +61,8 @@ export class UserService {
         cart.products.forEach(item => {
             cart.totalPrice += item.quantity * item.product.price
         })
-        const result = await this.userModel.findOneAndUpdate({ _id: _id }, { "status.cart": cart })
-        return "ok"
+        return await this.userModel.findOneAndUpdate({ _id: _id }, { "status.cart": cart }, {new: true)
+
     }
     async addToRegistered(_id: string): Promise<String> {
         const user = await this.userModel.findById(_id)
