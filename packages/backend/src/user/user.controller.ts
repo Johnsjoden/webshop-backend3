@@ -20,6 +20,7 @@ export class UserController {
         }
         return this.userService.create(user)
     }
+    @UseGuards(JwtAuthGuard)
     @Patch('updateuser')
     async updateUser(@Body() user: User, @Request() req) {
         return this.userService.updateUser(user, req.user.userId)
