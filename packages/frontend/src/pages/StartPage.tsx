@@ -51,14 +51,14 @@ export default function Start() {
             return (<div>{error}</div>)
         } else if (products) {
             return (<div className="ProductList">{
-                products.map((item) => {
+                products.map((item, index) => {
                     return (
-                        <div onClick={navigateToDetailPage} className="ProductCardStart">
-                            <p key={1}>{item.title}</p>
+                        <div key={index} onClick={navigateToDetailPage} className="ProductCardStart">
+                            <p>{item.title}</p>
                             <img className="ProductImage"
                                 src={item.image_url}
                                 alt={item.title} />
-                            <p key={2}>Price: {item.price}SEK</p>
+                            <p>Price: {item.price}SEK</p>
                         </div>)
                 })
             }</div>)
