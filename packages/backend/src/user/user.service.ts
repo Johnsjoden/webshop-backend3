@@ -38,9 +38,8 @@ export class UserService {
         const result = await this.userModel.findOne({ email })
         return result
     }
-    async addToBasket(products: Products, _id: string): Promise<String> {
-        const result = await this.userModel.findOneAndUpdate({ _id: _id }, { $push: { "status.varukorg": { $each: products } } })
-        return "ok"
+    async addToBasket(products: Products, _id: string): Promise<User> {
+        return await this.userModel.findOneAndUpdate({ _id: _id }, { $push: { "status.varukorg": { $each: products } } }, {new: true})
     }
     async addToRegistered(_id: string): Promise<String> {
         const user = await this.userModel.findById(_id)

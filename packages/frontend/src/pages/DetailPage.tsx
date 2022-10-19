@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import {ProductItems} from "@webshop-types/shared"
+import {ProductItems, User} from "@webshop-types/shared"
 import axios from 'axios';
 import '../App.css';
 import { Link, useNavigate } from 'react-router-dom';
@@ -33,7 +33,7 @@ export default function Detail() {
     const [session, setSession] = useState<boolean>(true);
 
     const token = localStorage.getItem('backend3')
-    console.log(token)
+    // console.log(token)
     
     const fetchUser = async (): Promise<void> => {    
         try {
@@ -42,7 +42,7 @@ export default function Detail() {
             setSession(false)
             // console.log(session)
             // console.log(response.data)
-            console.log("userId: ", response.data.userId)
+            // console.log("userId: ", response.data.userId)
             
         } catch (err) {
             console.log("Something went wrong fetching user", err)
@@ -50,7 +50,7 @@ export default function Detail() {
     }
 
     const addToCart = async (item: ProductItems): Promise <void> => {
-        console.log("Add to cart...?", item)
+        // console.log("Add to cart...?", item)
         
         const productItem: ProductItems[] = [{
             description: item.description,
@@ -61,13 +61,18 @@ export default function Detail() {
             manufacturer: item.manufacturer
         }]
         try{
-            const response = await axios.patch<ProductItems[]>("user/cart", productItem, { headers: { "Authorization": "Bearer " + token } })
-            .then((response => console.log(response)))
+            const response = await axios.patch<User>("user/cart", productItem, { headers: { "Authorization": "Bearer " + token } })
+            setCartProducts(response.data)
+            console.log(cartProducts?.status?.varukorg)
+            console.log(response.data)
         } catch(err){
             console.log(err)
         }
         
     }
+
+    const [cartProducts, setCartProducts] = useState<User>()
+
 
 
     const output = () => {
@@ -112,6 +117,11 @@ export default function Detail() {
                     <Link to="/user/login" className='link'>Log in</Link>
                 </div>
             </header>
+
+            <div>
+                { }
+            </div>
+
             <section>
                 {output()}
             </section>
