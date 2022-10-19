@@ -52,16 +52,16 @@ export default function Detail() {
     const addToCart = async (item: ProductItems): Promise <void> => {
         console.log("Add to cart...?", item)
         
-        const productItem: ProductItems = {
+        const productItem: ProductItems[] = [{
             description: item.description,
             title: item.title,
             category: item.category,
             weight: item.weight,
             price: item.price,
             manufacturer: item.manufacturer
-        }
+        }]
         try{
-            const response = await axios.patch<ProductItems>("user/cart", productItem, { headers: { "Authorization": "Bearer " + token } })
+            const response = await axios.patch<ProductItems[]>("user/cart", productItem, { headers: { "Authorization": "Bearer " + token } })
             .then((response => console.log(response)))
         } catch(err){
             console.log(err)
