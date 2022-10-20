@@ -22,7 +22,6 @@ export class ProductsController {
 
     @Get(":id")
     findSingle(@Param() req){
-        console.log(req.id)
         return this.productsService.findSingle(req.id)
     }
 
