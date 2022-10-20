@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { ProductItems, User } from "@webshop-types/shared"
 import axios from 'axios';
 import '../App.css';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 export default function Start() {
 
@@ -12,10 +12,10 @@ export default function Start() {
     const [error, setError] = useState<string | undefined>();
     const [session, setSession] = useState<boolean>(true);
 
-    const navigate = useNavigate();
-    const navigateToDetailPage = () => {
-        navigate("/detail");
-    }
+    // const navigate = useNavigate();
+    // const navigateToDetailPage = () => {
+    //     navigate("/detail");
+    // }
 
     const fetchProducts = async (): Promise<ProductItems[]> => {
         const response = await axios.get<ProductItems[]>("/products")
@@ -53,12 +53,13 @@ export default function Start() {
             return (<div className="ProductList">{
                 products.map((item, index) => {
                     return (
-                        <div key={index} onClick={navigateToDetailPage} className="ProductCardStart">
+                        <div key={index} className="ProductCardStart">
                             <p>{item.title}</p>
                             <img className="ProductImage"
                                 src={item.image_url}
                                 alt={item.title} />
                             <p>Price: {item.price}SEK</p>
+                            <Link to={`/detail/${item._id}`}>Read more on this product</Link>
                         </div>)
                 })
             }</div>)
