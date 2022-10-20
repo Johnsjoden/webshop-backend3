@@ -9,6 +9,9 @@ export class CartsController {
     @UseGuards(JwtAuthGuard)
     @Patch()
     addToBasket(@Body() products: Products[], @Request() req) {
+        /* if(products._id === dbproduct._id){
+
+        } */
         return this.cartsService.addToBasket(products, req.user.userId)
     }
     /* @UseGuards(JwtAuthGuard)

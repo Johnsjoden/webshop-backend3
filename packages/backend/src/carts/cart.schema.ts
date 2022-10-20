@@ -1,6 +1,5 @@
 import { Prop } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
-import { Products } from 'src/products/products.schema';
+import { Document, Types } from 'mongoose';
 
 export class Cart extends Document {
     @Prop()
@@ -9,9 +8,18 @@ export class Cart extends Document {
     delieveryFee: number
     @Prop()
     totalPrice: number
-    @Prop({ default: [] })
-    products: [{
-        quantity: number
-        product: Products
-    }]
+    @Prop()
+    products: [
+        {
+            quantity: number,
+            _id: Types.ObjectId,
+            description: string,
+            title: string,
+            image_url: string,
+            category: string,
+            weight: string,
+            price: number,
+            manufacturer: string,
+        }
+    ]
 }

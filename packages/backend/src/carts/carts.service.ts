@@ -9,35 +9,32 @@ import { Carts, CartsDocument } from './carts.schema';
 export class CartsService {
     constructor(@InjectModel(Carts.name) private cartModel: Model<CartsDocument>) { }
     async addToBasket(products: Products[], _id: string): Promise<String> {
-        const cartss = await this.cartModel.findOneAndUpdate({ userId: _id }, { $push: { "cart.products": { $each: products } } }).populate("userId")
-        /* const carts = await this.cartModel.findOne({ _id: "63503904a6ad72dae5fa8aee" }).populate("userId") fungerar*/
-        console.log(cartss)
-        /* const id = randomUUID()
+        const cartss = await this.cartModel.findOne({ userId: _id })
+        const id = randomUUID()
         let cart = {
             _id: id,
             delieveryFee: 399,
             totalPrice: 0,
-            products: carts.cart.products
+            products: cartss.cart.products
         }
         products.forEach(product => {
-            if (cart.products.find(item => item.product._id === product._id)) {
+            if (cart.products.find(item => item._id === product._id)) {
                 cart.products.find(item => {
-                    if (item.product._id === product._id) {
+                    if (item._id === product._id) {
                         item.quantity = item.quantity + 1
                     }
                 })
             } else {
                 cart.products.push({
-                    quantity: 1,
-                    product: product
+                    ...product,
+                    quantity: 1
                 })
             }
         })
         cart.products.forEach(item => {
-            cart.totalPrice += item.quantity * item.product.price
+            cart.totalPrice += item.quantity * item.price
         })
-        return await this.cartModel.findOneAndUpdate({ _id: _id }, { "cart.cart": cart }, { new: true }) */
-        return "Ok"
+        return await this.cartModel.findOneAndUpdate({ userId: _id }, { "cart": cart }, { new: true })
 
     }
     /* async addToRegistered(_id: string): Promise<String> {

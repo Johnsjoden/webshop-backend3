@@ -8,6 +8,6 @@ import { Carts, CartsSchema } from './carts.schema';
   imports: [MongooseModule.forFeature([{ name: Carts.name, schema: CartsSchema }])],
   providers: [CartsService],
   controllers: [CartsController],
-  exports: [CartsService]
+  exports: [CartsService, ]
 })
 export class CartsModule { }
