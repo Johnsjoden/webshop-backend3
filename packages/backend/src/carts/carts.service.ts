@@ -37,28 +37,28 @@ export class CartsService {
         return await this.cartModel.findOneAndUpdate({ userId: _id }, { "cart": cart }, { new: true })
 
     }
-    /* async addToRegistered(_id: string): Promise<String> {
-        const user = await this.cartModel.findById(_id)
-        const productsRemovedFromCart = await this.cartModel.findOneAndUpdate({ _id: _id }, { $set: { "cart.cart.products": [] } })
-        return await this.cartModel.findOneAndUpdate({ _id: _id }, { "cart.register": user.cart.cart })
+    async addToRegistered(_id: string): Promise<String> {
+        const cart = await this.cartModel.findOne({ userId: _id })
+        const productsRemovedFromCart = await this.cartModel.findOneAndUpdate({ userId: _id }, { $set: { "cart": { "products": [] } } })
+        return await this.cartModel.findOneAndUpdate({ userId: _id }, { "register": cart.cart })
     }
     async addToTreated(_id: string): Promise<String> {
-        const user = await this.cartModel.findById(_id)
-        const productsRemovedFromCart = await this.cartModel.findOneAndUpdate({ _id: _id }, { $set: { "cart.register": [] } })
-        return await this.cartModel.findOneAndUpdate({ _id: _id }, { $push: { "cart.treated": { $each: user.cart.register } } })
+        const cart = await this.cartModel.findOne({ userId: _id })
+        const productsRemovedFromCart = await this.cartModel.findOneAndUpdate({ userId: _id }, { $set: { "register": { "products": [] } } })
+        return await this.cartModel.findOneAndUpdate({ userId: _id }, { "treated": cart.register })
     }
     async addToUnderdelivery(_id: string): Promise<String> {
-        const user = await this.cartModel.findById(_id)
-        const productsRemovedFromCart = await this.cartModel.findOneAndUpdate({ _id: _id }, { $set: { "cart.treated": [] } })
-        return await this.cartModel.findOneAndUpdate({ _id: _id }, { $push: { "cart.underDelivery": { $each: user.cart.treated } } })
+        const cart = await this.cartModel.findOne({ userId: _id })
+        const productsRemovedFromCart = await this.cartModel.findOneAndUpdate({ userId: _id }, { $set: { "treated": { "products": [] } } })
+        return await this.cartModel.findOneAndUpdate({ userId: _id }, { "underDelivery": cart.treated })
     }
     async addToDelivered(_id: string): Promise<String> {
-        const user = await this.cartModel.findById(_id)
-        const productsRemovedFromCart = await this.cartModel.findOneAndUpdate({ _id: _id }, { $set: { "cart.underDelivery": [] } })
-        return await this.cartModel.findOneAndUpdate({ _id: _id }, { $push: { "cart.delivery": { $each: user.cart.underDelivery } } })
+        const cart = await this.cartModel.findOne({ userId: _id })
+        const productsRemovedFromCart = await this.cartModel.findOneAndUpdate({ userId: _id }, { $set: { "underDelivery": { "products": [] } } })
+        return await this.cartModel.findOneAndUpdate({ userId: _id }, { "delivered": cart.underDelivery })
     }
     async deleteCart(_id: string): Promise<String> {
-        const resetCart = await this.cartModel.findOneAndUpdate({ _id: _id }, { $set: { "cart.cart.products": [] } })
+        const resetCart = await this.cartModel.findOneAndUpdate({ _id: _id }, { $set: { "cart": { "products": [] } } })
         return "deleted cart"
-    } */
+    }
 }
