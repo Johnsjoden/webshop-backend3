@@ -14,7 +14,7 @@ export default function Detail() {
         return response.data
     }
 
-    const [product, setProduct] = useState<any>({});
+    const [product, setProduct] = useState<ProductItems>();
     const [error, setError] = useState<string | undefined>();
     const navigate = useNavigate();
 
@@ -23,8 +23,7 @@ export default function Detail() {
         fetchProduct()
             .then(setProduct)
             .catch((error) => {
-                setProduct({})
-                setError('Something went wrong when fetching products...')
+                setError('Something went wrong when fetching product')
             });
     }, []);
 
