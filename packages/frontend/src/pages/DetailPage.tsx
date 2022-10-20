@@ -54,6 +54,7 @@ export default function Detail() {
         // console.log("Add to cart...?", item)
 
         const productItem: ProductItems[] = [{
+            _id: item._id,
             description: item.description,
             title: item.title,
             category: item.category,
@@ -62,11 +63,12 @@ export default function Detail() {
             manufacturer: item.manufacturer
         }]
         try {
-            const response = await axios.patch<any>("user/cart", productItem, { headers: { "Authorization": "Bearer " + token } })
-            setCartProducts(response.data.status.varukorg)
-            console.log("Cart 0", response.data.status.varukorg[0])
+            const response = await axios.patch<any>("carts", productItem, { headers: { "Authorization": "Bearer " + token } })
+            console.log(response.data)
+            setCartProducts(response.data.cart.products)
+            /* console.log("Cart 0", response.data.status.varukorg[0])
             console.log("Cart 0 Category", response.data.status.varukorg[0].category)
-            console.log("Carts", response.data.status.varukorg)
+            console.log("Carts", response.data.status.varukorg) */
             // console.log("Carts Length", response.data.status.varukorg.length())
         } catch (err) {
             console.log(err)
@@ -110,6 +112,7 @@ export default function Detail() {
                 products.map((item, index) => {
                     return (
                         <div key={index} className="ProductCardDetail">
+                            <p>{item._id}</p>
                             <p>{item.title}</p>
                             <img className="ProductImage"
                                 src={item.image_url}

@@ -6,11 +6,13 @@ import { ProductsModule } from './products/products.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { ConfigModule } from '@nestjs/config';
+import { CartsModule } from './carts/carts.module';
 @Module({
   imports: [
     UserModule,
     AuthModule,
     ProductsModule,
+    CartsModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', '/files'),
     }),

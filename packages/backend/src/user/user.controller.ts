@@ -30,29 +30,4 @@ export class UserController {
     async finduser(@Request() req) {
         return this.userService.finduser(req.user.userId)
     }
-    @UseGuards(JwtAuthGuard)
-    @Patch("cart")
-    addToBasket(@Body() products: Products, @Request() req) {
-        return this.userService.addToBasket(products, req.user.userId)
-    }
-    @UseGuards(JwtAuthGuard)
-    @Patch("cart/registered")
-    addToRegistered(@Request() req) {
-        return this.userService.addToRegistered(req.user.userId)
-    }
-    @UseGuards(JwtAuthGuard)
-    @Patch("cart/treated")
-    addToTreated(@Request() req) {
-        return this.userService.addToTreated(req.user.userId)
-    }
-    @UseGuards(JwtAuthGuard)
-    @Patch("cart/underdelivery")
-    addToUnderdelivery(@Request() req) {
-        return this.userService.addToUnderdelivery(req.user.userId)
-    }
-    @UseGuards(JwtAuthGuard)
-    @Patch("cart/delivered")
-    addToDelivered(@Request() req) {
-        return this.userService.addToDelivered(req.user.userId)
-    }
 }
