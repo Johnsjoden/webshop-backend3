@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Logger, Patch, Post, UseGuards, Request, HttpException, HttpStatus, Delete } from '@nestjs/common';
+import { Body, Controller, Get, Logger, Patch, Post, UseGuards, Request, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { JwtAuthGuard } from 'src/auth/security/jwt-authguard';
@@ -26,7 +26,6 @@ export class UserController {
         return this.userService.updateUser(user, req.user.userId)
     }
     @UseGuards(JwtAuthGuard)
-
     @Get()
     async finduser(@Request() req) {
         return this.userService.finduser(req.user.userId)
