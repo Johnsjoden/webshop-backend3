@@ -79,7 +79,7 @@ export default function Detail() {
     const cartItems = () => {
         if (error) {
             return (<div>{error}</div>)
-        } else if (cartProducts) {
+        } else if (cartProducts && token) {
             return (
                 <>
                     <h2>Varukorg</h2>
