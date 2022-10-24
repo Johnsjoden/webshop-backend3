@@ -40,8 +40,12 @@ export class CartsService {
     }
 
 
-    async getCartProducts(_id: string): Promise<Carts[]>{
-        return await this.cartModel.findOne({userId: _id})
+    async getCartProducts(_id: string): Promise<Carts[]> {
+        return await this.cartModel.findOne({ userId: _id })
+    }
+
+    async getRegistedProducts(_id: string): Promise<Carts[]> {
+        return await this.cartModel.findOne({ userId: _id })
     }
 
     async addToRegistered(_id: string): Promise<String> {

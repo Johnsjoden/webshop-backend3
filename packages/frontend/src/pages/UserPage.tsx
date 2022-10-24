@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { User } from "@webshop-types/shared";
+import { ProductItems, User, Cart } from "@webshop-types/shared";
 import axios from "axios";
 
 export default function UserInfo() {
@@ -12,10 +12,15 @@ export default function UserInfo() {
     const [error, setError] = useState<string>("");
     const [registerMessage, setRegisterMessage] = useState<string>("");
     const [session, setSession] = useState<boolean>(true);
+    const [hasBeenBought, setHasBeenBought] = useState<boolean>(true);
     const [userUpdatedName, setUserUpdatedName] = useState<string>("");
     const [userUpdatedPhone, setUserUpdatedPhone] = useState<string>("");
     const [userUpdatedEmail, setUserUpdatedEmail] = useState<string>("");
     const [userUpdatedAdress, setUserUpdatedAdress] = useState<string>("");
+    const [cartStatus, setCartStatus] = useState<string>("");
+    const [totalPrice, setTotalPrice] = useState<number>(0);
+    const [deliveryFee, setDeliveryFee] = useState<number>(0);
+    const [cartProducts, setCartProducts] = useState<Cart[]>([]);
     const [userUpdated, setUserUpdated] = useState<User[]>([]);
 
     const token = localStorage.getItem('backend3')
@@ -47,11 +52,24 @@ export default function UserInfo() {
         }
     }
 
+    const fetchCartProducts = async (): Promise<void> => {
+        const response = await axios.get<any>("/carts/registered", { headers: { "Authorization": "Bearer " + token } })
+        setCartProducts(response.data.register)
+        setTotalPrice(response.data.register.totalPrice)
+        setCartStatus(response.data.register.status)
+        setDeliveryFee(response.data.register.delieveryFee)
+        console.log("Response.data.register", response.data.register)
+        // console.log("Response.data.register.products", response.data.register.products)
+        console.log("Length", response.data.register.length)
+        // console.log("TotalPrice", response.data.register.totalPrice)
+        // console.log("DeliveryFee", response.data.register.delieveryFee)
+    }
+
     const fetchUser = async (): Promise<void> => {
 
         try {
             const response = await axios.get<any>("/user", { headers: { "Authorization": "Bearer " + token } })
-            console.log("FetchUser", response)
+            // console.log("FetchUser", response)
             setUserUpdatedName(response.data.name)
             setUserUpdatedPhone(response.data.phonenumber)
             setUserUpdatedEmail(response.data.email)
@@ -62,8 +80,47 @@ export default function UserInfo() {
         }
     }
 
+    const cartItems = () => {
+        if (error) {
+            return (<div>{error}</div>)
+        } else if (cartProducts) {
+            return (
+                <>
+                    <div className="ProductList">{
+                        cartProducts.map((item, index) => {
+                            return (
+                                <div key={index} className="ProductCardDetail">
+                                    <p> Status: {item.status}</p>
+                                    <p> Total Price: {item.delieveryFee + item.totalPrice} SEK</p>
+                                    <p> Order nr: {item._id}</p>
+                                    {item.products.map((innerItem, index) => {
+                                        return (
+                                            <>
+                                                <p>{innerItem.title}</p>
+                                                <p >Price: {innerItem.price}SEK</p>
+                                                <p >Weight: {innerItem.weight}KG</p>
+                                                <p >Description: {innerItem.description}</p>
+                                                <p >Category: {innerItem.category}</p>
+                                                <p >Manufacturer: {innerItem.manufacturer}</p>
+                                                <p> Quantity: {innerItem.quantity}</p>
+                                            </>
+                                        )
+                                    })}
+
+                                </div>)
+                        })
+                    }
+                    </div>
+                </>
+            )
+        } else {
+            (<div>'Something went wrong fetching my products...'</div>)
+        }
+    }
+
     useEffect(() => {
         fetchUser()
+        fetchCartProducts()
     }, [])
 
     return (<div className="App">
@@ -133,7 +190,7 @@ export default function UserInfo() {
                 <div className="loginSpace">
                     <h2>Your receipts from previos purchase:</h2>
                     <div>
-                        Placeholder Receipt
+                        {cartItems()}
                     </div>
                 </div>
             </div>
