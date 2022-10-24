@@ -1,5 +1,6 @@
 import { Body, Controller, Patch, UseGuards, Request, Get, Delete } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { Cron } from '@nestjs/schedule';
 import { Model } from 'mongoose';
 import { JwtAuthGuard } from 'src/auth/security/jwt-authguard';
 import { Products, ProductsDocument, ProductsSchema } from 'src/products/products.schema';
@@ -28,20 +29,17 @@ export class CartsController {
     addToRegistered(@Request() req) {
         return this.cartsService.addToRegistered(req.user.userId)
     }
-    @UseGuards(JwtAuthGuard)
-    @Patch("treated")
-    addToTreated(@Request() req) {
-        return this.cartsService.addToTreated(req.user.userId)
+    @Cron('5 * * * * *')
+    addToTreated() {
+        return this.cartsService.addToTreated()
     }
-    @UseGuards(JwtAuthGuard)
-    @Patch("underdelivery")
-    addToUnderdelivery(@Request() req) {
-        return this.cartsService.addToUnderdelivery(req.user.userId)
+    @Cron("10 * * * * *")
+    addToUnderdelivery() {
+        return this.cartsService.addToUnderdelivery()
     }
-    @UseGuards(JwtAuthGuard)
-    @Patch("delivered")
+    @Cron("15 * * * * *")
     addToDelivered(@Request() req) {
-        return this.cartsService.addToDelivered(req.user.userId)
+        return this.cartsService.addToDelivered()
     }
     @UseGuards(JwtAuthGuard)
     @Delete("delete")

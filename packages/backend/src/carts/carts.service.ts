@@ -15,6 +15,7 @@ export class CartsService {
             _id: id,
             delieveryFee: 399,
             totalPrice: 0,
+            status: "cart",
             products: cartss.cart.products
         }
         products.forEach(product => {
@@ -46,25 +47,24 @@ export class CartsService {
     async addToRegistered(_id: string): Promise<String> {
         const cart = await this.cartModel.findOne({ userId: _id })
         const cartArray = []
+        cart.cart.status = "registered"
         cartArray.push(cart.cart)
         const productsRemovedFromCart = await this.cartModel.findOneAndUpdate({ userId: _id }, { $set: { "cart": { "products": [] } } })
         return await this.cartModel.findOneAndUpdate({ userId: _id }, { $push: { "register": { $each: cartArray } } })
 
     }
-    async addToTreated(_id: string): Promise<String> {
-        const cart = await this.cartModel.findOne({ userId: _id })
-        const productsRemovedFromCart = await this.cartModel.findOneAndUpdate({ userId: _id }, { $set: { "register": [] } })
-        return await this.cartModel.findOneAndUpdate({ userId: _id }, { $push: { "treated": { $each: cart.register } } }, { new: true })
+    async addToTreated(): Promise<String> {
+        console.log("anrop till treated")
+        const result = await this.cartModel.updateMany({ "register.status": { $in: ["registered"] } }, { $set: { "register.$.status": "treated" } })
+        return "result"
     }
-    async addToUnderdelivery(_id: string): Promise<String> {
-        const cart = await this.cartModel.findOne({ userId: _id })
-        const productsRemovedFromCart = await this.cartModel.findOneAndUpdate({ userId: _id }, { $set: { "treated": [] } })
-        return await this.cartModel.findOneAndUpdate({ userId: _id }, { $push: { "underDelivery": { $each: cart.treated } } }, { new: true })
+    async addToUnderdelivery(): Promise<any> {
+        console.log("anrop till undelievery")
+        return await this.cartModel.updateMany({ "register.status": { $in: ["treated"] } }, { $set: { "register.$.status": "underDelivery" } })
     }
-    async addToDelivered(_id: string): Promise<String> {
-        const cart = await this.cartModel.findOne({ userId: _id })
-        const productsRemovedFromCart = await this.cartModel.findOneAndUpdate({ userId: _id }, { $set: { "underDelivery": [] } })
-        return await this.cartModel.findOneAndUpdate({ userId: _id }, { $push: { "delivered": { $each: cart.underDelivery } } }, { new: true })
+    async addToDelivered(): Promise<any> {
+        console.log("anrop till delievered")
+        return await this.cartModel.updateMany({ "register.status": { $in: ["underDelivery"] } }, { $set: { "register.$.status": "delivered" } })
     }
     async deleteCart(_id: string): Promise<String> {
         const resetCart = await this.cartModel.findOneAndUpdate({ _id: _id }, { $set: { "cart": { "products": [] } } })

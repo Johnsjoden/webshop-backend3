@@ -1,3 +1,4 @@
+
 import { Body, Controller, Get, Param, Patch, Post, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
@@ -6,6 +7,8 @@ import { diskStorage } from 'multer';
 import { Products, ProductsDocument } from './products.schema';
 import { ProductsService } from './products.service';
 import { randomUUID } from "crypto"
+import { async } from 'rxjs';
+import { Http2ServerRequest } from 'http2';
 @Controller('products')
 export class ProductsController {
     constructor(
@@ -20,10 +23,18 @@ export class ProductsController {
         return this.productsService.findAll()
     }
 
+    @Get()
+    search(@Query() searchQuery) {
+        const result = this.productsService.search(searchQuery)
+        return 
+    }
+
+
     @Get(":id")
     findSingle(@Param() req){
         return this.productsService.findSingle(req.id)
     }
+
 
     @Post("uploads")
     @UseInterceptors(
