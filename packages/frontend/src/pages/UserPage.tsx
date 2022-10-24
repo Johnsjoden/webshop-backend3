@@ -12,16 +12,12 @@ export default function UserInfo() {
     const [error, setError] = useState<string>("");
     const [registerMessage, setRegisterMessage] = useState<string>("");
     const [session, setSession] = useState<boolean>(true);
-    const [hasBeenBought, setHasBeenBought] = useState<boolean>(true);
     const [userUpdatedName, setUserUpdatedName] = useState<string>("");
     const [userUpdatedPhone, setUserUpdatedPhone] = useState<string>("");
     const [userUpdatedEmail, setUserUpdatedEmail] = useState<string>("");
     const [userUpdatedAdress, setUserUpdatedAdress] = useState<string>("");
-    const [cartStatus, setCartStatus] = useState<string>("");
-    const [totalPrice, setTotalPrice] = useState<number>(0);
-    const [deliveryFee, setDeliveryFee] = useState<number>(0);
     const [cartProducts, setCartProducts] = useState<Cart[]>([]);
-    const [userUpdated, setUserUpdated] = useState<User[]>([]);
+
 
     const token = localStorage.getItem('backend3')
 
@@ -55,9 +51,6 @@ export default function UserInfo() {
     const fetchCartProducts = async (): Promise<void> => {
         const response = await axios.get<any>("/carts/registered", { headers: { "Authorization": "Bearer " + token } })
         setCartProducts(response.data.register)
-        setTotalPrice(response.data.register.totalPrice)
-        setCartStatus(response.data.register.status)
-        setDeliveryFee(response.data.register.delieveryFee)
         console.log("Response.data.register", response.data.register)
         // console.log("Response.data.register.products", response.data.register.products)
         console.log("Length", response.data.register.length)
@@ -119,9 +112,12 @@ export default function UserInfo() {
     }
 
     useEffect(() => {
-        fetchUser()
-        fetchCartProducts()
-    }, [])
+        const interval = setInterval(() => {
+            fetchUser()
+            fetchCartProducts()
+        }, 1000)
+        return () => clearInterval(interval)
+    }, []);
 
     return (<div className="App">
         <header className='header'>
