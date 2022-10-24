@@ -25,8 +25,11 @@ export default function Start() {
     }
 
     const searchDB = async (searchQuery: string): Promise<void[]> => {
-        const response = await axios.post<any[]>("/products/search", searchQuery)
-        console.log("Query", searchQuery)
+        const searchWord = {
+            searchQuery: searchQuery
+        }
+        const response = await axios.post<any[]>("/products/search", searchWord)
+        console.log("Query", searchWord)
         console.log("searchDB", response)
         return response.data
     }
