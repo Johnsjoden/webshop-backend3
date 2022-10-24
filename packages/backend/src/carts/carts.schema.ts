@@ -11,14 +11,20 @@ export class Carts {
     userId: Types.ObjectId;
     @Prop({ type: Cart, default: { products: [] } })
     cart: Cart
-    @Prop({ type: Cart })
-    register: Cart
-    @Prop({ type: Cart })
-    treated: Cart
-    @Prop({ type: Cart })
-    underDelivery: Cart
-    @Prop({ type: Cart })
-    delivered: Cart
+    @Prop({ type: Cart, default: [] })
+    register: [Cart]
+    @Prop({ type: Cart, default: [] })
+    treated: [Cart]
+    @Prop({ type: Cart, default: [] })
+    underDelivery: [Cart]
+    @Prop({ type: Cart, default: [] })
+    delivered: [Cart]
 }
+
+
+cart: {
+
+}
+
 
 export const CartsSchema = SchemaFactory.createForClass(Carts);
