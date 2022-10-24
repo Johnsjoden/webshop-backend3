@@ -12,6 +12,12 @@ export default function Detail() {
     const fetchProduct = async (): Promise<ProductItems> => {
         const response = await axios.get<ProductItems>(`/products/${id}`)
         return response.data
+        
+    }
+
+    const fetchCartProducts = async (): Promise<void> => {
+        const response = await axios.get<any>("/carts", { headers: { "Authorization": "Bearer " + token } })
+        setCartProducts(response.data.cart.products)
     }
 
     const [product, setProduct] = useState<ProductItems>();
@@ -20,6 +26,7 @@ export default function Detail() {
 
     useEffect(() => {
         fetchUser()
+        fetchCartProducts()
         fetchProduct()
             .then(setProduct)
             .catch((error) => {
@@ -33,16 +40,12 @@ export default function Detail() {
     const [cartProducts, setCartProducts] = useState<ProductItems[]>([]);
 
     const token = localStorage.getItem('backend3')
-    // console.log(token)
 
     const fetchUser = async (): Promise<void> => {
         try {
             const response = await axios.get<any>("/auth/profile", { headers: { "Authorization": "Bearer " + token } })
             setEmail(response.data.email)
             setSession(false)
-            // console.log(session)
-            // console.log(response.data)
-            // console.log("userId: ", response.data.userId)
 
         } catch (err) {
             console.log("Something went wrong fetching user", err)
@@ -50,7 +53,6 @@ export default function Detail() {
     }
 
     const addToCart = async (item: ProductItems): Promise<void> => {
-        // console.log("Add to cart...?", item)
 
         const productItem: ProductItems[] = [{
             _id: item._id,
@@ -63,12 +65,7 @@ export default function Detail() {
         }]
         try {
             const response = await axios.patch<any>("carts", productItem, { headers: { "Authorization": "Bearer " + token } })
-            console.log(response.data)
             setCartProducts(response.data.cart.products)
-            /* console.log("Cart 0", response.data.status.varukorg[0])
-            console.log("Cart 0 Category", response.data.status.varukorg[0].category)
-            console.log("Carts", response.data.status.varukorg) */
-            // console.log("Carts Length", response.data.status.varukorg.length())
         } catch (err) {
             console.log(err)
         }
@@ -92,6 +89,7 @@ export default function Detail() {
                                     <p >Description: {item.description}</p>
                                     <p >Category: {item.category}</p>
                                     <p >Manufacturer: {item.manufacturer}</p>
+                                    <p> Quantity: {item.quantity}</p>
                                 </div>)
                         })
                     }
