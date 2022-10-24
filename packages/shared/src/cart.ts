@@ -1,20 +1,12 @@
-import { Prop } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
-
-export class Cart extends Document {
-    @Prop()
+export default interface Cart {
     _id: string
-    @Prop()
     delieveryFee: number
-    @Prop()
     totalPrice: number
-    @Prop()
-    status: string
-    @Prop()
+    status: string,
     products: [
         {
             quantity: number,
-            _id: Types.ObjectId,
+            _id: string,
             description: string,
             title: string,
             image_url: string,
