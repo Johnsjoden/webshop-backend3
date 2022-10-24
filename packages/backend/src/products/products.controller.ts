@@ -24,7 +24,7 @@ export class ProductsController {
     }
 
     @Post("search")
-    search(@Body() searchQuery: string) {
+    search(@Body() searchQuery) {
         console.log("Search Controller", searchQuery)
         return this.productsService.search(searchQuery)
     }
