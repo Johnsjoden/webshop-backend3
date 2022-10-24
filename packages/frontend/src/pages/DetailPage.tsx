@@ -2,29 +2,35 @@ import { useState, useEffect } from 'react';
 import { ProductItems, User } from "@webshop-types/shared"
 import axios from 'axios';
 import '../App.css';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 export default function Detail() {
 
     axios.defaults.baseURL = process.env.REACT_APP_TODO_API || "http://localhost:3000"
+    const {id} = useParams()
 
-
-    const fetchProducts = async (): Promise<ProductItems[]> => {
-        const response = await axios.get<ProductItems[]>("/products")
+    const fetchProduct = async (): Promise<ProductItems> => {
+        const response = await axios.get<ProductItems>(`/products/${id}`)
         return response.data
+        
     }
 
-    const [products, setProducts] = useState<ProductItems[]>([]);
+    const fetchCartProducts = async (): Promise<void> => {
+        const response = await axios.get<any>("/carts", { headers: { "Authorization": "Bearer " + token } })
+        setCartProducts(response.data.cart.products)
+    }
+
+    const [product, setProduct] = useState<ProductItems>();
     const [error, setError] = useState<string | undefined>();
     const navigate = useNavigate();
 
     useEffect(() => {
         fetchUser()
-        fetchProducts()
-            .then(setProducts)
+        fetchCartProducts()
+        fetchProduct()
+            .then(setProduct)
             .catch((error) => {
-                setProducts([])
-                setError('Something went wrong when fetching products...')
+                setError('Something went wrong when fetching product')
             });
     }, []);
 
@@ -34,16 +40,12 @@ export default function Detail() {
     const [cartProducts, setCartProducts] = useState<ProductItems[]>([]);
 
     const token = localStorage.getItem('backend3')
-    // console.log(token)
 
     const fetchUser = async (): Promise<void> => {
         try {
             const response = await axios.get<any>("/auth/profile", { headers: { "Authorization": "Bearer " + token } })
             setEmail(response.data.email)
             setSession(false)
-            // console.log(session)
-            // console.log(response.data)
-            // console.log("userId: ", response.data.userId)
 
         } catch (err) {
             console.log("Something went wrong fetching user", err)
@@ -51,7 +53,6 @@ export default function Detail() {
     }
 
     const addToCart = async (item: ProductItems): Promise<void> => {
-        // console.log("Add to cart...?", item)
 
         const productItem: ProductItems[] = [{
             _id: item._id,
@@ -64,12 +65,7 @@ export default function Detail() {
         }]
         try {
             const response = await axios.patch<any>("carts", productItem, { headers: { "Authorization": "Bearer " + token } })
-            console.log(response.data)
             setCartProducts(response.data.cart.products)
-            /* console.log("Cart 0", response.data.status.varukorg[0])
-            console.log("Cart 0 Category", response.data.status.varukorg[0].category)
-            console.log("Carts", response.data.status.varukorg) */
-            // console.log("Carts Length", response.data.status.varukorg.length())
         } catch (err) {
             console.log(err)
         }
@@ -79,7 +75,7 @@ export default function Detail() {
     const cartItems = () => {
         if (error) {
             return (<div>{error}</div>)
-        } else if (cartProducts) {
+        } else if (cartProducts && token) {
             return (
                 <>
                     <h2>Varukorg</h2>
@@ -93,6 +89,7 @@ export default function Detail() {
                                     <p >Description: {item.description}</p>
                                     <p >Category: {item.category}</p>
                                     <p >Manufacturer: {item.manufacturer}</p>
+                                    <p> Quantity: {item.quantity}</p>
                                 </div>)
                         })
                     }
@@ -105,31 +102,27 @@ export default function Detail() {
     }
 
     const output = () => {
-        if (error) {
-            return (<div>{error}</div>)
-        } else if (products) {
-            return (<div className="ProductList">{
-                products.map((item, index) => {
-                    return (
-                        <div key={index} className="ProductCardDetail">
-                            <p>{item._id}</p>
-                            <p>{item.title}</p>
+        if (error){
+            return( <div> {error} </div>)
+        } else if(product){
+            return(
+                <div className="ProductCardDetail">
+                    <p>{product._id}</p>
+                           <p>{product.title}</p>
                             <img className="ProductImage"
-                                src={item.image_url}
-                                alt={item.title} />
-                            <p >Price: {item.price}SEK</p>
-                            <p >Weight: {item.weight}KG</p>
-                            <p >Description: {item.description}</p>
-                            <p >Category: {item.category}</p>
-                            <p >Manufacturer: {item.manufacturer}</p>
-                            <button className='buyButton' onClick={() => addToCart(item)}>Add to cart</button>
-                        </div>)
-                })
-            }</div>)
-        } else {
-            (<div>'Something went wrong fetching my products...'</div>)
+                                src={product.image_url}
+                             alt={product.title} />
+                            <p >Price: {product.price}SEK</p>
+                             <p >Weight: {product.weight}KG</p>
+                             <p >Description: {product.description}</p>
+                            <p >Category: {product.category}</p>
+                            <p >Manufacturer: {product.manufacturer}</p>
+                            <button className='buyButton' onClick={() => addToCart(product)}>Add to cart</button>
+                </div>
+            )
         }
     }
+
 
     return (
 

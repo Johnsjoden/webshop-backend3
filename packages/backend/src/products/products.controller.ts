@@ -1,4 +1,5 @@
-import { Body, Controller, Get, Patch, Post, Query, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
+
+import { Body, Controller, Get, Param, Patch, Post, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { Model } from 'mongoose';
@@ -21,11 +22,20 @@ export class ProductsController {
     findAll() {
         return this.productsService.findAll()
     }
+
     @Get()
     search(@Query() searchQuery) {
         const result = this.productsService.search(searchQuery)
         return 
     }
+
+
+    @Get(":id")
+    findSingle(@Param() req){
+        return this.productsService.findSingle(req.id)
+    }
+
+
     @Post("uploads")
     @UseInterceptors(
         FileInterceptor('image', {
