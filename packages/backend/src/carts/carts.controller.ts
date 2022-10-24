@@ -1,4 +1,4 @@
-import { Body, Controller, Patch, UseGuards, Request, Delete } from '@nestjs/common';
+import { Body, Controller, Patch, UseGuards, Request, Get, Delete } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { JwtAuthGuard } from 'src/auth/security/jwt-authguard';
@@ -14,8 +14,17 @@ export class CartsController {
         return this.cartsService.addToBasket(products, req.user.userId)
 
     }
+
+
+    @UseGuards(JwtAuthGuard)
+    @Get()
+    getCartProducts(@Request() req){
+        return this.cartsService.getCartProducts(req.user.userId)
+    } 
+
     @UseGuards(JwtAuthGuard)
     @Patch("registered")
+
     addToRegistered(@Request() req) {
         return this.cartsService.addToRegistered(req.user.userId)
     }

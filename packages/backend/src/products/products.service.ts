@@ -16,4 +16,9 @@ export class ProductsService {
         return products
     }
 
+    async findSingle(_id: string): Promise<Products>{
+        const product = await this.productsModel.findById({_id: _id})
+        return product
+    }
+
 }
