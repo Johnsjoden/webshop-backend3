@@ -72,6 +72,25 @@ export default function Detail() {
 
     }
 
+    const addToRegister = async (item: any): Promise <void> => {
+
+        const productItems: ProductItems[] = [{
+            _id: item._id,
+            description: item.description,
+            title: item.title,
+            category: item.category,
+            weight: item.weight,
+            price: item.price,
+            manufacturer: item.manufacturer
+        }]
+        try{
+            await axios.patch<ProductItems>("/carts/registered", productItems, { headers: { "Authorization": "Bearer " + token } })
+        }   catch(err){
+            console.log(err)
+        }
+
+    }
+
     const cartItems = () => {
         if (error) {
             return (<div>{error}</div>)
@@ -94,6 +113,7 @@ export default function Detail() {
                         })
                     }
                     </div>
+                    <button className='buyButton' onClick={() => addToRegister(cartProducts)}>Add to register</button>
                 </>
             )
         } else {
@@ -107,7 +127,7 @@ export default function Detail() {
         } else if(product){
             return(
                 <div className="ProductCardDetail">
-                    <p>{product._id}</p>
+                    <h1>You are viewing {product.title}</h1>
                            <p>{product.title}</p>
                             <img className="ProductImage"
                                 src={product.image_url}
