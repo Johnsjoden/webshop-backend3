@@ -23,15 +23,16 @@ export class ProductsController {
         return this.productsService.findAll()
     }
 
-    // @Get()
-    // search(@Query() searchQuery) {
-    //     const result = this.productsService.search(searchQuery)
-    //     return 
-    // }
+    @Post("search")
+    search(@Body() searchQuery: string) {
+        console.log(searchQuery)
+        return this.productsService.search(searchQuery)
+
+    }
 
 
     @Get(":id")
-    findSingle(@Param() req){
+    findSingle(@Param() req) {
         return this.productsService.findSingle(req.id)
     }
 
