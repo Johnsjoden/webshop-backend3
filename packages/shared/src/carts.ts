@@ -1,5 +1,5 @@
-import Cart from "./cart";
+// import Cart from "./cart";
 
-export default interface Carts {
-    cart: [Cart]
-}
+// export default interface Carts {
+//     cart: [Cart]
+// }
