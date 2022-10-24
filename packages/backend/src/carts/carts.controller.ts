@@ -25,10 +25,10 @@ export class CartsController {
 
     @UseGuards(JwtAuthGuard)
     @Patch("registered")
-
     addToRegistered(@Request() req) {
         return this.cartsService.addToRegistered(req.user.userId)
     }
+    
     @Cron('5 * * * * *')
     addToTreated() {
         return this.cartsService.addToTreated()

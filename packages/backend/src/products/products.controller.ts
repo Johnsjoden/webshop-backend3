@@ -23,11 +23,11 @@ export class ProductsController {
         return this.productsService.findAll()
     }
 
-    @Get()
-    search(@Query() searchQuery) {
-        const result = this.productsService.search(searchQuery)
-        return 
-    }
+    // @Get()
+    // search(@Query() searchQuery) {
+    //     const result = this.productsService.search(searchQuery)
+    //     return 
+    // }
 
 
     @Get(":id")
