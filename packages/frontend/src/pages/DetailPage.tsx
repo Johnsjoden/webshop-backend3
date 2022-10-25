@@ -85,6 +85,7 @@ export default function Detail() {
         }]
         try {
             await axios.patch<ProductItems>("/carts/registered", productItems, { headers: { "Authorization": "Bearer " + token } })
+            navigate("/user/userinfo")
         } catch (err) {
             console.log(err)
         }
