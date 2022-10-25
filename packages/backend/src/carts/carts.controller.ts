@@ -16,7 +16,6 @@ export class CartsController {
 
     }
 
-
     @UseGuards(JwtAuthGuard)
     @Get()
     getCartProducts(@Request() req) {
