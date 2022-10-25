@@ -83,6 +83,8 @@ export default function UserInfo() {
                         cartProducts.map((item, index) => {
                             return (
                                 <div key={index} className="ProductCardDetail">
+                                    <p> Ordered by: {userUpdatedName}</p>
+                                    <p> Adress: {userUpdatedAdress}</p>
                                     <p> Status: {item.status}</p>
                                     <p> Total Price: {item.delieveryFee + item.totalPrice} SEK</p>
                                     <p> Order nr: {item._id}</p>
