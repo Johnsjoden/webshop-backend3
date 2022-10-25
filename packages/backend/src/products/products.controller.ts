@@ -22,10 +22,11 @@ export class ProductsController {
     findAll() {
         return this.productsService.findAll()
     }
-    // konstigt den slår inte mot denna url..
-    @Get("search")
-    search(@Query() searchQuery): Promise<Products[]> {
-        return this.productsService.search(searchQuery.query)
+
+    @Post("search")
+    search(@Body() searchQuery) {
+        console.log("Search Controller", searchQuery)
+        return this.productsService.search(searchQuery)
     }
 
 

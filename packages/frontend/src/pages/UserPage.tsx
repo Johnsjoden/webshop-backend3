@@ -183,11 +183,14 @@ export default function UserInfo() {
                         {error}
                     </div>
                 </div>
-                <div className="loginSpace">
-                    <h2>Your receipts from previos purchase:</h2>
-                    <div>
-                        {cartItems()}
-                    </div>
+
+            </div>
+        </section>
+        <section>
+            <div className="loginSpace">
+                <h2>Your receipts from previos purchase:</h2>
+                <div className="receiptSpace">
+                    {cartItems()}
                 </div>
             </div>
         </section>

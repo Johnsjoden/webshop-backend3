@@ -16,8 +16,14 @@ export class ProductsService {
         const products = await this.productsModel.find()
         return products
     }
-    async search(search: string): Promise<Products[]> {
-        const products = await this.productsModel.find({ description: { $regex: new RegExp(`\\b${search}\\b`, "gi") } })
+    async search(search): Promise<any> {
+        // const products = await this.productsModel.find({ description: { search } })
+        // let word = search.golfclub;
+        // this.search = search
+        let word = search.searchQuery
+        // const products = await this.productsModel.find({ description: { $regex: word } })
+        const products = await this.productsModel.find({ description: { $regex: new RegExp(`\\b${word}\\b`, "gi") } })
+        console.log("Search Service", search)
         return products
     }
 

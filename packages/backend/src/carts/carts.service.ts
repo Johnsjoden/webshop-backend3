@@ -36,7 +36,6 @@ export class CartsService {
             cart.totalPrice += item.quantity * item.price
         })
         return await this.cartModel.findOneAndUpdate({ userId: _id }, { "cart": cart }, { new: true })
-
     }
 
 

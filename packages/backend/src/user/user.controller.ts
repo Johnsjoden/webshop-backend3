@@ -14,9 +14,8 @@ export class UserController {
     async create(@Body() user: User) {
         const email = user.email.toLowerCase()
         const userAlreadyCreated = await this.userModel.findOne({ email: email })
-        this.logger.debug(userAlreadyCreated)
-        if (userAlreadyCreated) {
-            throw new HttpException('email already in use', 409);
+        if (user.email.length < 5 || user.password.length < 5 || userAlreadyCreated) {
+            throw new HttpException('Email and password should have 5 characters or Email already exists', 409);
         }
         return this.userService.create(user)
     }
