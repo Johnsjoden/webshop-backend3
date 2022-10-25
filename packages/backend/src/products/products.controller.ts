@@ -22,16 +22,15 @@ export class ProductsController {
     findAll() {
         return this.productsService.findAll()
     }
-
-    @Get()
-    search(@Query() searchQuery) {
-        const result = this.productsService.search(searchQuery)
-        return 
+    // konstigt den slår inte mot denna url..
+    @Get("search")
+    search(@Query() searchQuery): Promise<Products[]> {
+        return this.productsService.search(searchQuery.query)
     }
 
 
     @Get(":id")
-    findSingle(@Param() req){
+    findSingle(@Param() req) {
         return this.productsService.findSingle(req.id)
     }
 
