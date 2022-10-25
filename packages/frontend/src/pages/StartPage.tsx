@@ -20,7 +20,7 @@ export default function Start() {
     // }
 
     const fetchProducts = async (): Promise<ProductItems[]> => {
-        const response = await axios.get<ProductItems[]>(`/products/search?query=${searchQuery}`)
+        const response = await axios.get<ProductItems[]>(`/products`)
         return response.data
     }
 

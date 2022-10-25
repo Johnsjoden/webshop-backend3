@@ -9,10 +9,11 @@ import { ProductsService } from './products.service';
 import { randomUUID } from "crypto"
 import { async } from 'rxjs';
 import { Http2ServerRequest } from 'http2';
+import { User, UserDocument } from 'src/user/user.schema';
 @Controller('products')
 export class ProductsController {
     constructor(
-        @InjectModel(Products.name) private userModel: Model<ProductsDocument>,
+        @InjectModel(Products.name) private productModel: Model<ProductsDocument>,
         private readonly productsService: ProductsService) { }
     @Post()
     create(@Body() product: Products) {

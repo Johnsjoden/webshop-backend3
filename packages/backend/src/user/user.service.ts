@@ -23,9 +23,9 @@ export class UserService {
         return result
     }
     async updateUser(user: User, _id: string): Promise<User> {
+        console.log("user", user)
         user.name = user.name.toLowerCase()
         user.email = user.email.toLowerCase()
-        user.adress = user.adress.toLowerCase()
         return await this.userModel.findOneAndUpdate({ _id: _id }, user, { new: true })
 
     }
