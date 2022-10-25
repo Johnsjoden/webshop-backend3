@@ -15,7 +15,6 @@ export default function Detail() {
     const [product, setProduct] = useState<ProductItems>();
     const [error, setError] = useState<string | undefined>();
     const [registerError, setRegisterError] = useState<string>();
-    const [showCart, setShowCart] = useState<boolean>(true);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -63,7 +62,6 @@ export default function Detail() {
         try {
             const response = await axios.patch<any>("carts", productItem, { headers: { "Authorization": "Bearer " + token } })
             setCartProducts(response.data.cart.products)
-            setShowCart(false)
         } catch (err) {
             console.log(err)
         }
@@ -100,10 +98,9 @@ export default function Detail() {
     const cartItems = () => {
         if (registerError) {
             return (<div>{registerError}</div>)
-        } else if (cartProducts && token) {
+        } else if (cartProducts.length > 0 && token) {
             return (
                 <>
-                    {showCart ? (<></>) : (
                         <>
                             <h2>Varukorg</h2>
                             <div className="ProductList">{
@@ -124,7 +121,6 @@ export default function Detail() {
                             <button className='buyButton' onClick={() => addToRegister(cartProducts)}>Add to register</button>
                         <button className='buyButton' onClick={(e) => { deleteCart(e) }}>Delete cart</button>
                         </>
-                    )}
                 </>
             )
         } else {
