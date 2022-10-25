@@ -7,12 +7,12 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 export default function Detail() {
 
     axios.defaults.baseURL = process.env.REACT_APP_TODO_API || "http://localhost:3000"
-    const {id} = useParams()
+    const { id } = useParams()
 
     const fetchProduct = async (): Promise<ProductItems> => {
         const response = await axios.get<ProductItems>(`/products/${id}`)
         return response.data
-        
+
     }
 
     const fetchCartProducts = async (): Promise<void> => {
@@ -72,7 +72,7 @@ export default function Detail() {
 
     }
 
-    const addToRegister = async (item: any): Promise <void> => {
+    const addToRegister = async (item: any): Promise<void> => {
 
         const productItems: ProductItems[] = [{
             _id: item._id,
@@ -83,9 +83,9 @@ export default function Detail() {
             price: item.price,
             manufacturer: item.manufacturer
         }]
-        try{
+        try {
             await axios.patch<ProductItems>("/carts/registered", productItems, { headers: { "Authorization": "Bearer " + token } })
-        }   catch(err){
+        } catch (err) {
             console.log(err)
         }
 
@@ -121,23 +121,27 @@ export default function Detail() {
         }
     }
 
+    function logOut() {
+        localStorage.clear();
+    }
+
     const output = () => {
-        if (error){
-            return( <div> {error} </div>)
-        } else if(product){
-            return(
+        if (error) {
+            return (<div> {error} </div>)
+        } else if (product) {
+            return (
                 <div className="ProductCardDetail">
                     <h1>You are viewing {product.title}</h1>
-                           <p>{product.title}</p>
-                            <img className="ProductImage"
-                                src={product.image_url}
-                             alt={product.title} />
-                            <p >Price: {product.price}SEK</p>
-                             <p >Weight: {product.weight}KG</p>
-                             <p >Description: {product.description}</p>
-                            <p >Category: {product.category}</p>
-                            <p >Manufacturer: {product.manufacturer}</p>
-                            <button className='buyButton' onClick={() => addToCart(product)}>Add to cart</button>
+                    <p>{product.title}</p>
+                    <img className="ProductImage"
+                        src={product.image_url}
+                        alt={product.title} />
+                    <p >Price: {product.price}SEK</p>
+                    <p >Weight: {product.weight}KG</p>
+                    <p >Description: {product.description}</p>
+                    <p >Category: {product.category}</p>
+                    <p >Manufacturer: {product.manufacturer}</p>
+                    <button className='buyButton' onClick={() => addToCart(product)}>Add to cart</button>
                 </div>
             )
         }
@@ -154,10 +158,17 @@ export default function Detail() {
                 </div>
                 <div>
                     <h2>DetailPage</h2>
-                    {session ? (<p> </p>) : (<p>Logged in as: {email}</p>)}
                 </div>
                 <div>
-                    <Link to="/user/login" className='link'>Log in</Link>
+                    {session ?
+                        (<Link to="user/login" className='link'>Log in</Link>) :
+                        (<Link
+                            to="/"
+                            onClick={() => {
+                                logOut();
+                                setSession(true);
+                            }}
+                            className='link'>Log out</Link>)}
                 </div>
             </header>
 

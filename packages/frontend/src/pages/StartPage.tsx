@@ -60,7 +60,7 @@ export default function Start() {
                                 src={item.image_url}
                                 alt={item.title} />
                             <p>Price: {item.price}SEK</p>
-                            <Link to={`/detail/${item._id}`}>Read more on this product</Link>
+                            <Link className='buylink' to={`/detail/${item._id}`}>Read more on this product and buy</Link>
                         </div>)
                 })
             }</div>)
