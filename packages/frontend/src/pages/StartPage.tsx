@@ -1,29 +1,25 @@
 import { useState, useEffect } from 'react';
-import { ProductItems } from "@webshop-types/shared"
+import { ProductItems, User } from "@webshop-types/shared"
 import axios from 'axios';
 import '../App.css';
-import { Link, useNavigate, } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { response } from 'express';
 
 export default function Start() {
 
     axios.defaults.baseURL = process.env.REACT_APP_TODO_API || "http://localhost:3000"
-
-    const navigate = useNavigate();
-
+    //test
+    const [products, setProducts] = useState<ProductItems[]>([]);
     const [error, setError] = useState<string | undefined>();
     const [session, setSession] = useState<boolean>(true);
-    const [searchQuery, setSearchQuery] = useState<string>("");
 
+    // const navigate = useNavigate();
+    // const navigateToDetailPage = () => {
+    //     navigate("/detail");
+    // }
 
-    const searchDB = async (searchQuery: string): Promise<ProductItems[]> => {
-        const searchWord = {
-            searchQuery: searchQuery
-        }
-        const response = await axios.post<ProductItems[]>("/products/search", searchWord)
-        console.log("Query", searchWord)
-        console.log("searchDB", response)
-        console.log("SearchResult")
-        // navigate("/searchPage")
+    const fetchProducts = async (): Promise<ProductItems[]> => {
+        const response = await axios.get<ProductItems[]>("/products")
         return response.data
     }
 
@@ -43,15 +39,41 @@ export default function Start() {
 
     useEffect(() => {
         fetchUser()
-    });
+        fetchProducts()
+            .then(setProducts)
+            .catch((error) => {
+                setProducts([])
+                setError('Something went wrong when fetching products...')
+            });
+    }, []);
+
+    const output = () => {
+        if (error) {
+            return (<div>{error}</div>)
+        } else if (products) {
+            return (<div className="ProductList">{
+                products.map((item, index) => {
+                    return (
+                        <div key={index} className="ProductCardStart">
+                            <p>{item.title}</p>
+                            <img className="ProductImage"
+                                src={item.image_url}
+                                alt={item.title} />
+                            <p>Price: {item.price}SEK</p>
+                            <Link to={`/detail/${item._id}`}>Read more on this product</Link>
+                        </div>)
+                })
+            }</div>)
+        } else {
+            (<div>'Something went wrong fetching my products...'</div>)
+        }
+    }
 
     return (
         <div className="App">
             <header className='header'>
                 <div>
-                    <div>
-                        <Link to="/searchpage" className='link'>Click here to search</Link>
-                    </div>
+                    <Link to="/searchpage" className='link'>To searchpage</Link>
                 </div>
                 <div>
                     <h2>StartPage</h2>
@@ -71,7 +93,9 @@ export default function Start() {
                     {session ? (<></>) : (<Link className="link" to="user/userinfo">Profile</Link>)}
                 </div>
             </header>
+            <section>
+                {output()}
+            </section>
         </div>
     );
 }
-
