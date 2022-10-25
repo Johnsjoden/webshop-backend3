@@ -8,12 +8,16 @@ export default function Start() {
 
     axios.defaults.baseURL = process.env.REACT_APP_TODO_API || "http://localhost:3000"
 
-    const navigate = useNavigate();
-
+    const [products, setProducts] = useState<ProductItems[]>([]);
     const [error, setError] = useState<string | undefined>();
     const [session, setSession] = useState<boolean>(true);
     const [searchQuery, setSearchQuery] = useState<string>("");
+    const [searchResult, setSearchResult] = useState<ProductItems[]>([]);
 
+    const fetchProducts = async (): Promise<ProductItems[]> => {
+        const response = await axios.get<ProductItems[]>("/products")
+        return response.data
+    }
 
     const searchDB = async (searchQuery: string): Promise<ProductItems[]> => {
         const searchWord = {
@@ -21,10 +25,11 @@ export default function Start() {
         }
         const response = await axios.post<ProductItems[]>("/products/search", searchWord)
         console.log("Query", searchWord)
-        console.log("searchDB", response)
-        console.log("SearchResult")
-        // navigate("/searchPage")
+        console.log("searchDB", response.data)
+        setSearchResult(response.data)
+        console.log("SearchResult", searchResult)
         return response.data
+
     }
 
     const fetchUser = async (): Promise<void> => {
@@ -43,18 +48,52 @@ export default function Start() {
 
     useEffect(() => {
         fetchUser()
-    });
+    }, []);
+
+    const output = () => {
+        if (error) {
+            return (<div>{error}</div>)
+        } else if (products) {
+            return (<div className="ProductList">{
+                searchResult.map((item, index) => {
+                    return (
+                        <div key={index} className="ProductCardStart">
+                            <p>{item.title}</p>
+                            <img className="ProductImage"
+                                src={item.image_url}
+                                alt={item.title} />
+                            <p>Price: {item.price}SEK</p>
+                            <Link to={`/detail/${item._id}`}>Read more on this product</Link>
+                        </div>)
+                })
+            }</div>)
+        } else {
+            (<div>'Something went wrong fetching my products...'</div>)
+        }
+    }
 
     return (
         <div className="App">
             <header className='header'>
                 <div>
-                    <div>
-                        <Link to="/searchpage" className='link'>Click here to search</Link>
-                    </div>
+                    <Link to="/" className='link'>Back to StartPage</Link>
+                </div>
+
+                <div className='buttonBox'>
+                    <button className="buyButton" onClick={(e) => console.log(searchDB(searchQuery))}>Search</button>
                 </div>
                 <div>
-                    <h2>StartPage</h2>
+                    <input
+                        className="inputField"
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                </div>
+
+
+                <div>
+                    <h2>Searchpage</h2>
                 </div>
                 <div>
                     {session ?
@@ -71,6 +110,9 @@ export default function Start() {
                     {session ? (<></>) : (<Link className="link" to="user/userinfo">Profile</Link>)}
                 </div>
             </header>
+            <section>
+                {output()}
+            </section>
         </div>
     );
 }
