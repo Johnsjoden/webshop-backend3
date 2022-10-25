@@ -29,7 +29,8 @@ export class CartsController {
     @Patch("registered")
     async addToRegistered(@Request() req) {
         const user = await this.userModel.findOne({ _id: req.user.userId })
-        if (!user.adress || !user.phonenumber || !user.name || user.name.length > 2 || user.phonenumber.length > 2 || user.adress.length > 2) {
+
+        if (!user.adress || !user.phonenumber || !user.name || user.name.length < 2 || user.phonenumber.length < 2 || user.adress.length < 2) {
             throw new HttpException("hello", 404)
         } else {
             return this.cartsService.addToRegistered(req.user.userId)
