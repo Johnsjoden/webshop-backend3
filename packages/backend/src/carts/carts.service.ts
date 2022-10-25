@@ -38,6 +38,12 @@ export class CartsService {
         return await this.cartModel.findOneAndUpdate({ userId: _id }, { "cart": cart }, { new: true })
 
     }
+
+
+    async getCartProducts(_id: string): Promise<Carts[]>{
+        return await this.cartModel.findOne({userId: _id})
+    }
+
     async addToRegistered(_id: string): Promise<String> {
         const cart = await this.cartModel.findOne({ userId: _id })
         const cartArray = []
@@ -45,6 +51,7 @@ export class CartsService {
         cartArray.push(cart.cart)
         const productsRemovedFromCart = await this.cartModel.findOneAndUpdate({ userId: _id }, { $set: { "cart": { "products": [] } } })
         return await this.cartModel.findOneAndUpdate({ userId: _id }, { $push: { "register": { $each: cartArray } } })
+
     }
     async addToTreated(): Promise<String> {
         console.log("anrop till treated")
