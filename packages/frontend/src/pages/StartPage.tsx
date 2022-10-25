@@ -12,6 +12,7 @@ export default function Start() {
     const [products, setProducts] = useState<ProductItems[]>([]);
     const [error, setError] = useState<string | undefined>();
     const [session, setSession] = useState<boolean>(true);
+    const [searchQuery, setSearchQuery] = useState<string>("");
 
     // const navigate = useNavigate();
     // const navigateToDetailPage = () => {
@@ -19,7 +20,17 @@ export default function Start() {
     // }
 
     const fetchProducts = async (): Promise<ProductItems[]> => {
-        const response = await axios.get<ProductItems[]>("/products")
+        const response = await axios.get<ProductItems[]>(`/products`)
+        return response.data
+    }
+
+    const searchDB = async (searchQuery: string): Promise<void[]> => {
+        const searchWord = {
+            searchQuery: searchQuery
+        }
+        const response = await axios.post<any[]>("/products/search", searchWord)
+        console.log("Query", searchWord)
+        console.log("searchDB", response)
         return response.data
     }
 
@@ -45,7 +56,7 @@ export default function Start() {
                 setProducts([])
                 setError('Something went wrong when fetching products...')
             });
-    }, []);
+    }, [searchQuery]);
 
     const output = () => {
         if (error) {

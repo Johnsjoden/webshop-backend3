@@ -57,20 +57,17 @@ export class CartsService {
 
     }
     async addToTreated(): Promise<String> {
-        console.log("anrop till treated")
         const result = await this.cartModel.updateMany({ "register.status": { $in: ["registered"] } }, { $set: { "register.$.status": "treated" } })
         return "result"
     }
     async addToUnderdelivery(): Promise<any> {
-        console.log("anrop till undelievery")
         return await this.cartModel.updateMany({ "register.status": { $in: ["treated"] } }, { $set: { "register.$.status": "underDelivery" } })
     }
     async addToDelivered(): Promise<any> {
-        console.log("anrop till delievered")
         return await this.cartModel.updateMany({ "register.status": { $in: ["underDelivery"] } }, { $set: { "register.$.status": "delivered" } })
     }
     async deleteCart(_id: string): Promise<String> {
-        const resetCart = await this.cartModel.findOneAndUpdate({ _id: _id }, { $set: { "cart": { "products": [] } } })
+        const resetCart = await this.cartModel.findOneAndUpdate({ userId: _id }, { $set: { "cart": { "products": [] } } })
         return "deleted cart"
     }
 }

@@ -1,5 +1,5 @@
 
-import { Body, Controller, Get, Param, Patch, Post, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, UploadedFile, UploadedFiles, UseInterceptors, Query } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { Model } from 'mongoose';
@@ -9,10 +9,11 @@ import { ProductsService } from './products.service';
 import { randomUUID } from "crypto"
 import { async } from 'rxjs';
 import { Http2ServerRequest } from 'http2';
+import { User, UserDocument } from 'src/user/user.schema';
 @Controller('products')
 export class ProductsController {
     constructor(
-        @InjectModel(Products.name) private userModel: Model<ProductsDocument>,
+        @InjectModel(Products.name) private productModel: Model<ProductsDocument>,
         private readonly productsService: ProductsService) { }
     @Post()
     create(@Body() product: Products) {
