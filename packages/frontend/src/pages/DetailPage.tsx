@@ -14,6 +14,8 @@ export default function Detail() {
     const token = localStorage.getItem('backend3')
     const [product, setProduct] = useState<ProductItems>();
     const [error, setError] = useState<string | undefined>();
+    const [registerError, setRegisterError] = useState<string>();
+    const [showCart, setShowCart] = useState<boolean>(true);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -61,6 +63,7 @@ export default function Detail() {
         try {
             const response = await axios.patch<any>("carts", productItem, { headers: { "Authorization": "Bearer " + token } })
             setCartProducts(response.data.cart.products)
+            setShowCart(false)
         } catch (err) {
             console.log(err)
         }
@@ -82,7 +85,8 @@ export default function Detail() {
             await axios.patch<ProductItems>("/carts/registered", productItems, { headers: { "Authorization": "Bearer " + token } })
             navigate("/user/userinfo")
         } catch (err) {
-            console.log(err)
+            setRegisterError("All userinformation needs to be updated first")
+            console.log("FEL HÄR", err)
         }
 
     }
@@ -94,29 +98,33 @@ export default function Detail() {
     }
 
     const cartItems = () => {
-        if (error) {
-            return (<div>{error}</div>)
+        if (registerError) {
+            return (<div>{registerError}</div>)
         } else if (cartProducts && token) {
             return (
                 <>
-                    <h2>Varukorg</h2>
-                    <div className="ProductList">{
-                        cartProducts.map((item, index) => {
-                            return (
-                                <div key={index} className="ProductCardDetail">
-                                    <p>{item.title}</p>
-                                    <p >Price: {item.price}SEK</p>
-                                    <p >Weight: {item.weight}KG</p>
-                                    <p >Description: {item.description}</p>
-                                    <p >Category: {item.category}</p>
-                                    <p >Manufacturer: {item.manufacturer}</p>
-                                    <p> Quantity: {item.quantity}</p>
-                                </div>)
-                        })
-                    }
-                    </div>
-                    <button className='buyButton' onClick={() => addToRegister(cartProducts)}>Add to register</button>
-                    <button className='buyButton' onClick={(e) => { deleteCart(e) }}>Delete cart</button>
+                    {showCart ? (<></>) : (
+                        <>
+                            <h2>Varukorg</h2>
+                            <div className="ProductList">{
+                                cartProducts.map((item, index) => {
+                                    return (
+                                        <div key={index} className="ProductCardDetail">
+                                            <p>{item.title}</p>
+                                            <p >Price: {item.price}SEK</p>
+                                            <p >Weight: {item.weight}KG</p>
+                                            <p >Description: {item.description}</p>
+                                            <p >Category: {item.category}</p>
+                                            <p >Manufacturer: {item.manufacturer}</p>
+                                            <p> Quantity: {item.quantity}</p>
+                                        </div>)
+                                })
+                            }
+                            </div>
+                            <button className='buyButton' onClick={() => addToRegister(cartProducts)}>Add to register</button>
+                        <button className='buyButton' onClick={(e) => { deleteCart(e) }}>Delete cart</button>
+                        </>
+                    )}
                 </>
             )
         } else {
@@ -134,7 +142,7 @@ export default function Detail() {
         } else if (product) {
             return (
                 <div className="ProductCardDetail">
-                    <h1>You are viewing {product.title}</h1>
+
                     <p>{product.title}</p>
                     <img className="ProductImage"
                         src={product.image_url}
@@ -173,11 +181,10 @@ export default function Detail() {
                             }}
                             className='link'>Log out</Link>)}
                 </div>
+                <div>
+                    {session ? (<></>) : (<Link className="link" to="/user/userinfo">Profile</Link>)}
+                </div>
             </header>
-
-            <div>
-                { }
-            </div>
 
             <section>
                 {output()}
