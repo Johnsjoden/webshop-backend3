@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, SyntheticEvent } from 'react';
 import { ProductItems, User } from "@webshop-types/shared"
 import axios from 'axios';
 import '../App.css';
@@ -8,18 +8,10 @@ export default function Detail() {
 
     axios.defaults.baseURL = process.env.REACT_APP_TODO_API || "http://localhost:3000"
     const { id } = useParams()
-
-    const fetchProduct = async (): Promise<ProductItems> => {
-        const response = await axios.get<ProductItems>(`/products/${id}`)
-        return response.data
-
-    }
-
-    const fetchCartProducts = async (): Promise<void> => {
-        const response = await axios.get<any>("/carts", { headers: { "Authorization": "Bearer " + token } })
-        setCartProducts(response.data.cart.products)
-    }
-
+    const [email, setEmail] = useState<string>("");
+    const [session, setSession] = useState<boolean>(true);
+    const [cartProducts, setCartProducts] = useState<ProductItems[]>([]);
+    const token = localStorage.getItem('backend3')
     const [product, setProduct] = useState<ProductItems>();
     const [error, setError] = useState<string | undefined>();
     const [registerError, setRegisterError] = useState<string>();
@@ -35,13 +27,16 @@ export default function Detail() {
                 setError('Something went wrong when fetching product')
             });
     }, []);
+    const fetchProduct = async (): Promise<ProductItems> => {
+        const response = await axios.get<ProductItems>(`/products/${id}`)
+        return response.data
 
+    }
 
-    const [email, setEmail] = useState<string>("");
-    const [session, setSession] = useState<boolean>(true);
-    const [cartProducts, setCartProducts] = useState<ProductItems[]>([]);
-
-    const token = localStorage.getItem('backend3')
+    const fetchCartProducts = async (): Promise<void> => {
+        const response = await axios.get<any>("/carts", { headers: { "Authorization": "Bearer " + token } })
+        setCartProducts(response.data.cart.products)
+    }
 
     const fetchUser = async (): Promise<void> => {
         try {
@@ -95,6 +90,12 @@ export default function Detail() {
         }
 
     }
+    const deleteCart = async (event: SyntheticEvent): Promise<any> => {
+        event.preventDefault()
+        const result = await axios.delete<any>("/carts/delete", { headers: { "Authorization": "Bearer " + token } })
+        fetchCartProducts()
+        return result
+    }
 
     const cartItems = () => {
         if (registerError) {
@@ -121,6 +122,7 @@ export default function Detail() {
                             }
                             </div>
                             <button className='buyButton' onClick={() => addToRegister(cartProducts)}>Add to register</button>
+                        <button className='buyButton' onClick={(e) => { deleteCart(e) }}>Delete cart</button>
                         </>
                     )}
                 </>
@@ -189,7 +191,9 @@ export default function Detail() {
             </section>
 
             <div>
-                {cartItems()}
+                
+                {token? cartItems() : ""}
+                
             </div>
             <br />
         </div>
