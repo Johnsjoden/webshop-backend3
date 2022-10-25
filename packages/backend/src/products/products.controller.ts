@@ -21,10 +21,11 @@ export class ProductsController {
     findAll() {
         return this.productsService.findAll()
     }
-    @Get()
-    search(@Query() searchQuery) {
-        const result = this.productsService.search(searchQuery)
-        return 
+    @Get("y")
+    search(@Query() query: { query: string }): Promise<Products[]> {
+        console.log(query)
+        const result = this.productsService.search(query.query)
+        return result
     }
     @Post("uploads")
     @UseInterceptors(
