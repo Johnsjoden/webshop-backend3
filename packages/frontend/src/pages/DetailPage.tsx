@@ -162,7 +162,7 @@ export default function Detail() {
                 </div>
                 <div>
                     {session ?
-                        (<Link to="user/login" className='link'>Log in</Link>) :
+                        (<Link to="/user/login" className='link'>Log in</Link>) :
                         (<Link
                             to="/"
                             onClick={() => {

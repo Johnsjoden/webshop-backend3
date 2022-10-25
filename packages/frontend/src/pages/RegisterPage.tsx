@@ -27,7 +27,8 @@ export default function Register() {
             navigate("/user/login")
         } catch (err) {
             if (err) {
-                setError("userEmail already exists")
+                console.log(err)
+                setError("Email and password should have 5 characters or Email already exists")
             }
         }
     }
