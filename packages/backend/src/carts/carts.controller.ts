@@ -19,16 +19,22 @@ export class CartsController {
 
     @UseGuards(JwtAuthGuard)
     @Get()
-    getCartProducts(@Request() req){
+    getCartProducts(@Request() req) {
         return this.cartsService.getCartProducts(req.user.userId)
-    } 
+    }
 
     @UseGuards(JwtAuthGuard)
     @Patch("registered")
-
     addToRegistered(@Request() req) {
         return this.cartsService.addToRegistered(req.user.userId)
     }
+
+    @UseGuards(JwtAuthGuard)
+    @Get("registered")
+    getRegisteredProducts(@Request() req) {
+        return this.cartsService.getCartProducts(req.user.userId)
+    }
+
     @Cron('5 * * * * *')
     addToTreated() {
         return this.cartsService.addToTreated()

@@ -3,6 +3,7 @@ import { ProductItems, User } from "@webshop-types/shared"
 import axios from 'axios';
 import '../App.css';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { response } from 'express';
 
 export default function Start() {
 
@@ -11,6 +12,7 @@ export default function Start() {
     const [products, setProducts] = useState<ProductItems[]>([]);
     const [error, setError] = useState<string | undefined>();
     const [session, setSession] = useState<boolean>(true);
+    const [searchQuery, setSearchQuery] = useState<string>("");
 
     // const navigate = useNavigate();
     // const navigateToDetailPage = () => {
@@ -18,7 +20,17 @@ export default function Start() {
     // }
 
     const fetchProducts = async (): Promise<ProductItems[]> => {
-        const response = await axios.get<ProductItems[]>("/products")
+        const response = await axios.get<ProductItems[]>(`/products/search?query=${searchQuery}`)
+        return response.data
+    }
+
+    const searchDB = async (searchQuery: string): Promise<void[]> => {
+        const searchWord = {
+            searchQuery: searchQuery
+        }
+        const response = await axios.post<any[]>("/products/search", searchWord)
+        console.log("Query", searchWord)
+        console.log("searchDB", response)
         return response.data
     }
 
@@ -44,7 +56,7 @@ export default function Start() {
                 setProducts([])
                 setError('Something went wrong when fetching products...')
             });
-    }, []);
+    }, [searchQuery]);
 
     const output = () => {
         if (error) {
@@ -72,6 +84,20 @@ export default function Start() {
         <div className="App">
             <header className='header'>
                 <div>
+                    <div>
+                        <label>Search: </label>
+                        <input
+                            className="inputField"
+                            type="text"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                        />
+                    </div>
+                    <div>
+                        <div className='buttonBox'>
+                            <button className="buyButton" onClick={(e) => console.log(searchDB(searchQuery))}>Search</button>
+                        </div>
+                    </div>
                 </div>
                 <div>
                     <h2>StartPage</h2>
