@@ -5,6 +5,7 @@ import DetailPage from './pages/DetailPage';
 import LogInPage from './pages/LogInPage';
 import UserPage from './pages/UserPage';
 import RegisterPage from './pages/RegisterPage';
+import SearchPage from './pages/SearchPage';
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
           <Route path="/detail/:id" element={<DetailPage />} />
           <Route path="/user/login" element={<LogInPage />} />
           <Route path="/user/userinfo" element={<UserPage />} />
+          <Route path="/searchpage" element={<SearchPage />} />
         </Routes>
       </header>
 
