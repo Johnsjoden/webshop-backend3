@@ -122,7 +122,7 @@ export default function Detail() {
                             }
                             </div>
                             <button className='buyButton' onClick={() => addToRegister(cartProducts)}>Add to register</button>
-                        <button className='buyButton' onClick={(e) => { deleteCart(e) }}>Delete cart</button>
+                            <button className='buyButton' onClick={(e) => { deleteCart(e) }}>Delete cart</button>
                         </>
                     )}
                 </>
@@ -191,9 +191,9 @@ export default function Detail() {
             </section>
 
             <div>
-                
-                {token? cartItems() : ""}
-                
+
+                {token ? cartItems() : ""}
+
             </div>
             <br />
         </div>
