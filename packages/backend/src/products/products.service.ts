@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { arrayBuffer } from 'stream/consumers';
 import { Products, ProductsDocument } from './products.schema';
 
 @Injectable()
@@ -23,7 +22,6 @@ export class ProductsService {
         let word = search.searchQuery
         // const products = await this.productsModel.find({ description: { $regex: word } })
         const products = await this.productsModel.find({ description: { $regex: new RegExp(`\\b${word}\\b`, "gi") } })
-        console.log("Search Service", search)
         return products
     }
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { ProductItems, User, Cart } from "@webshop-types/shared";
+import { User, Cart } from "@webshop-types/shared";
 import axios from "axios";
 
 export default function UserInfo() {
@@ -11,7 +11,6 @@ export default function UserInfo() {
     const [userAdress, setUserAdress] = useState<string>("");
     const [error, setError] = useState<string>("");
     const [registerMessage, setRegisterMessage] = useState<string>("");
-    const [session, setSession] = useState<boolean>(true);
     const [userUpdatedName, setUserUpdatedName] = useState<string>("");
     const [userUpdatedPhone, setUserUpdatedPhone] = useState<string>("");
     const [userUpdatedEmail, setUserUpdatedEmail] = useState<string>("");
@@ -51,23 +50,16 @@ export default function UserInfo() {
     const fetchCartProducts = async (): Promise<void> => {
         const response = await axios.get<any>("/carts/registered", { headers: { "Authorization": "Bearer " + token } })
         setCartProducts(response.data.register)
-        console.log("Response.data.register", response.data.register)
-        // console.log("Response.data.register.products", response.data.register.products)
-        console.log("Length", response.data.register.length)
-        // console.log("TotalPrice", response.data.register.totalPrice)
-        // console.log("DeliveryFee", response.data.register.delieveryFee)
     }
 
     const fetchUser = async (): Promise<void> => {
 
         try {
             const response = await axios.get<any>("/user", { headers: { "Authorization": "Bearer " + token } })
-            // console.log("FetchUser", response)
             setUserUpdatedName(response.data.name)
             setUserUpdatedPhone(response.data.phonenumber)
             setUserUpdatedEmail(response.data.email)
             setUserUpdatedAdress(response.data.adress)
-            setSession(false)
         } catch (err) {
             console.log("Something went wrong fetching user", err)
         }

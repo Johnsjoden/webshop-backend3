@@ -1,5 +1,5 @@
 import { useState, useEffect, SyntheticEvent } from 'react';
-import { ProductItems, User } from "@webshop-types/shared"
+import { ProductItems } from "@webshop-types/shared"
 import axios from 'axios';
 import '../App.css';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -15,7 +15,7 @@ export default function Detail() {
     const [product, setProduct] = useState<ProductItems>();
     const [error, setError] = useState<string | undefined>();
     const [registerError, setRegisterError] = useState<string>();
-    const [showCart, setShowCart] = useState<boolean>(true);
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -63,7 +63,6 @@ export default function Detail() {
         try {
             const response = await axios.patch<any>("carts", productItem, { headers: { "Authorization": "Bearer " + token } })
             setCartProducts(response.data.cart.products)
-            setShowCart(false)
         } catch (err) {
             console.log(err)
         }
@@ -86,7 +85,6 @@ export default function Detail() {
             navigate("/user/userinfo")
         } catch (err) {
             setRegisterError("All userinformation needs to be updated first")
-            console.log("FEL HÄR", err)
         }
 
     }
@@ -100,31 +98,29 @@ export default function Detail() {
     const cartItems = () => {
         if (registerError) {
             return (<div>{registerError}</div>)
-        } else if (cartProducts && token) {
+        } else if (cartProducts.length > 0 && token) {
             return (
                 <>
-                    {showCart ? (<></>) : (
-                        <>
-                            <h2>Varukorg</h2>
-                            <div className="ProductList">{
-                                cartProducts.map((item, index) => {
-                                    return (
-                                        <div key={index} className="ProductCardDetail">
-                                            <p>{item.title}</p>
-                                            <p >Price: {item.price}SEK</p>
-                                            <p >Weight: {item.weight}KG</p>
-                                            <p >Description: {item.description}</p>
-                                            <p >Category: {item.category}</p>
-                                            <p >Manufacturer: {item.manufacturer}</p>
-                                            <p> Quantity: {item.quantity}</p>
-                                        </div>)
-                                })
-                            }
-                            </div>
-                            <button className='buyButton' onClick={() => addToRegister(cartProducts)}>Add to register</button>
-                            <button className='buyButton' onClick={(e) => { deleteCart(e) }}>Delete cart</button>
-                        </>
-                    )}
+                    <>
+                        <h2>Varukorg</h2>
+                        <div className="ProductList">{
+                            cartProducts.map((item, index) => {
+                                return (
+                                    <div key={index} className="ProductCardDetail">
+                                        <p>{item.title}</p>
+                                        <p >Price: {item.price}SEK</p>
+                                        <p >Weight: {item.weight}KG</p>
+                                        <p >Description: {item.description}</p>
+                                        <p >Category: {item.category}</p>
+                                        <p >Manufacturer: {item.manufacturer}</p>
+                                        <p> Quantity: {item.quantity}</p>
+                                    </div>)
+                            })
+                        }
+                        </div>
+                        <button className='buyButton' onClick={() => addToRegister(cartProducts)}>Add to register</button>
+                        <button className='buyButton' onClick={(e) => { deleteCart(e) }}>Delete cart</button>
+                    </>
                 </>
             )
         } else {
