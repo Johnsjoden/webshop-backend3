@@ -23,7 +23,6 @@ export default function Register() {
         }
         try {
             const response = await axios.post<User>("/user", user)
-                .then((response => console.log(response)));
             navigate("/user/login")
         } catch (err) {
             if (err) {

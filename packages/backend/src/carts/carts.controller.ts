@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Cron } from '@nestjs/schedule';
 import { Model } from 'mongoose';
 import { JwtAuthGuard } from 'src/auth/security/jwt-authguard';
-import { Products, ProductsDocument, ProductsSchema } from 'src/products/products.schema';
+import { Products, ProductsDocument } from 'src/products/products.schema';
 import { User, UserDocument } from 'src/user/user.schema';
 import { CartsService } from './carts.service';
 

@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, SchemaTypes, Types } from 'mongoose';
-import { User } from 'src/user/user.schema';
 import { Cart } from './cart.schema';
 
 export type CartsDocument = Carts & Document;
@@ -20,11 +19,5 @@ export class Carts {
     @Prop({ type: Cart, default: [] })
     delivered: [Cart]
 }
-
-
-cart: {
-
-}
-
 
 export const CartsSchema = SchemaFactory.createForClass(Carts);

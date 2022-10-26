@@ -1,15 +1,12 @@
 
 import { Body, Controller, Get, Param, Patch, Post, UploadedFile, UploadedFiles, UseInterceptors, Query } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { Model } from 'mongoose';
 import { diskStorage } from 'multer';
 import { Products, ProductsDocument } from './products.schema';
 import { ProductsService } from './products.service';
 import { randomUUID } from "crypto"
-import { async } from 'rxjs';
-import { Http2ServerRequest } from 'http2';
-import { User, UserDocument } from 'src/user/user.schema';
 @Controller('products')
 export class ProductsController {
     constructor(
@@ -26,7 +23,6 @@ export class ProductsController {
 
     @Post("search")
     search(@Body() searchQuery) {
-        console.log("Search Controller", searchQuery)
         return this.productsService.search(searchQuery)
     }
 
