@@ -19,7 +19,6 @@ export default function LogIn() {
         try {
             const response = await axios.post<any>("/auth/login", user)
             const token = response.data.access_token;
-            console.log(token);
             localStorage.setItem("backend3", token)
             navigate("/")
         } catch (err) {

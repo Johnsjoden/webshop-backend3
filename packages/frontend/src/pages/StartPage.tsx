@@ -1,36 +1,21 @@
 import { useState, useEffect } from 'react';
-import { ProductItems, User } from "@webshop-types/shared"
+import { ProductItems } from "@webshop-types/shared"
 import axios from 'axios';
 import '../App.css';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import { response } from 'express';
+import { Link } from 'react-router-dom';
+
 
 export default function Start() {
 
     axios.defaults.baseURL = process.env.REACT_APP_TODO_API || "http://localhost:3000"
-    //test
+
     const [products, setProducts] = useState<ProductItems[]>([]);
     const [error, setError] = useState<string | undefined>();
     const [session, setSession] = useState<boolean>(true);
     const [searchQuery, setSearchQuery] = useState<string>("");
 
-    // const navigate = useNavigate();
-    // const navigateToDetailPage = () => {
-    //     navigate("/detail");
-    // }
-
     const fetchProducts = async (): Promise<ProductItems[]> => {
         const response = await axios.get<ProductItems[]>(`/products`)
-        return response.data
-    }
-
-    const searchDB = async (searchQuery: string): Promise<void[]> => {
-        const searchWord = {
-            searchQuery: searchQuery
-        }
-        const response = await axios.post<any[]>("/products/search", searchWord)
-        console.log("Query", searchWord)
-        console.log("searchDB", response)
         return response.data
     }
 

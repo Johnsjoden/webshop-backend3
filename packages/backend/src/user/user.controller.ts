@@ -2,7 +2,6 @@ import { Body, Controller, Get, Logger, Patch, Post, UseGuards, Request, HttpExc
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { JwtAuthGuard } from 'src/auth/security/jwt-authguard';
-import { Products } from 'src/products/products.schema';
 import { User, UserDocument } from './user.schema';
 import { UserService } from './user.service';
 

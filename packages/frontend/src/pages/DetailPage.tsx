@@ -1,5 +1,5 @@
 import { useState, useEffect, SyntheticEvent } from 'react';
-import { ProductItems, User } from "@webshop-types/shared"
+import { ProductItems } from "@webshop-types/shared"
 import axios from 'axios';
 import '../App.css';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -84,7 +84,6 @@ export default function Detail() {
             navigate("/user/userinfo")
         } catch (err) {
             setRegisterError("All userinformation needs to be updated first")
-            console.log("FEL HÄR", err)
         }
 
     }
@@ -101,26 +100,26 @@ export default function Detail() {
         } else if (cartProducts.length > 0 && token) {
             return (
                 <>
-                        <>
-                            <h2>Varukorg</h2>
-                            <div className="ProductList">{
-                                cartProducts.map((item, index) => {
-                                    return (
-                                        <div key={index} className="ProductCardDetail">
-                                            <p>{item.title}</p>
-                                            <p >Price: {item.price}SEK</p>
-                                            <p >Weight: {item.weight}KG</p>
-                                            <p >Description: {item.description}</p>
-                                            <p >Category: {item.category}</p>
-                                            <p >Manufacturer: {item.manufacturer}</p>
-                                            <p> Quantity: {item.quantity}</p>
-                                        </div>)
-                                })
-                            }
-                            </div>
-                            <button className='buyButton' onClick={() => addToRegister(cartProducts)}>Add to register</button>
+                    <>
+                        <h2>Varukorg</h2>
+                        <div className="ProductList">{
+                            cartProducts.map((item, index) => {
+                                return (
+                                    <div key={index} className="ProductCardDetail">
+                                        <p>{item.title}</p>
+                                        <p >Price: {item.price}SEK</p>
+                                        <p >Weight: {item.weight}KG</p>
+                                        <p >Description: {item.description}</p>
+                                        <p >Category: {item.category}</p>
+                                        <p >Manufacturer: {item.manufacturer}</p>
+                                        <p> Quantity: {item.quantity}</p>
+                                    </div>)
+                            })
+                        }
+                        </div>
+                        <button className='buyButton' onClick={() => addToRegister(cartProducts)}>Add to register</button>
                         <button className='buyButton' onClick={(e) => { deleteCart(e) }}>Delete cart</button>
-                        </>
+                    </>
                 </>
             )
         } else {
@@ -187,9 +186,9 @@ export default function Detail() {
             </section>
 
             <div>
-                
-                {token? cartItems() : ""}
-                
+
+                {token ? cartItems() : ""}
+
             </div>
             <br />
         </div>

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { ProductItems } from "@webshop-types/shared"
 import axios from 'axios';
 import '../App.css';
-import { Link, useNavigate, } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export default function Start() {
 
@@ -24,10 +24,9 @@ export default function Start() {
             searchQuery: searchQuery
         }
         const response = await axios.post<ProductItems[]>("/products/search", searchWord)
-        console.log("Query", searchWord)
-        console.log("searchDB", response.data)
+
         setSearchResult(response.data)
-        console.log("SearchResult", searchResult)
+
         return response.data
 
     }
