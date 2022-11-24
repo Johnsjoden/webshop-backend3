@@ -15,7 +15,6 @@ export default function Detail() {
     const [product, setProduct] = useState<ProductItems>();
     const [error, setError] = useState<string | undefined>();
     const [registerError, setRegisterError] = useState<string>();
-
     const navigate = useNavigate();
 
     useEffect(() => {

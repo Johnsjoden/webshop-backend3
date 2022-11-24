@@ -11,7 +11,9 @@ import { randomUUID } from "crypto"
 export class ProductsController {
     constructor(
         @InjectModel(Products.name) private productModel: Model<ProductsDocument>,
-        private readonly productsService: ProductsService) { }
+        private readonly productsService: ProductsService) {
+        productsService.createProducts()
+    }
     @Post()
     create(@Body() product: Products) {
         return this.productsService.create(product)
