@@ -53,7 +53,7 @@ img {
   color:#008CBA;
 }
 
-::placeholder { /* Most modern browsers support this now. */
+::placeholder { 
   color:    #008CBA;
 }
 
@@ -67,21 +67,8 @@ img {
   padding: 5px;
 }
 
-.ProductCardStart:hover {
-  cursor:pointer;
-  transform: scale(1.05);
-  transition: all .4s ease 3s;
-  -webkit-transition: all .4s ease; 
-}
-
-.ProductCardDetail:hover {
-  transform: scale(1.05);
-  transition: all .4s ease 3s;
-  -webkit-transition: all .4s ease; 
-}
-
 .buyButton {
-  background-color: #008CBA; /* Green */
+  background-color: #008CBA; 
   border: 2px solid white;
   color: white;
   padding: 16px 32px;

@@ -14,7 +14,7 @@ export class ProductsService {
     async createProducts(): Promise<string> {
         const productss = [{
             "description": "A top of the line stick manufactured by Kosa for the practioners of sports bandy",
-            "title": "Bandyklubba ",
+            "title": "Bandy Stick ",
             "image_url": "https://www.xxl.se/filespin/10464871ed6b4664a24986ab49625bc4?resize=1400,1400&quality=95&bgcolor=efefef",
             "category": "Sports",
             "weight": "1kg",
@@ -32,7 +32,7 @@ export class ProductsService {
         },
         {
             "description": "A Fotball manufactured by FIFA for the World Cup sports event in 2022",
-            "title": " FOTBALL 2022",
+            "title": " Football 2022",
             "image_url": "https://plus.unsplash.com/premium_photo-1658506638118-524a66dc5cee?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8Zm9vdGJhbGx8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60",
             "category": "Sports",
             "weight": "1kg",
@@ -43,9 +43,7 @@ export class ProductsService {
         productsss.forEach(async (item) => {
             const products = await this.productsModel.findOneAndDelete({ _id: item._id })
         })
-        /* productss.forEach(async (item) => {
-            const products = await this.productsModel.findOneAndDelete({})
-        }) */
+
         productss.forEach(async (item) => {
             const products = await this.productsModel.create(item)
             products.save()
@@ -57,11 +55,7 @@ export class ProductsService {
         return products
     }
     async search(search): Promise<any> {
-        // const products = await this.productsModel.find({ description: { search } })
-        // let word = search.golfclub;
-        // this.search = search
         let word = search.searchQuery
-        // const products = await this.productsModel.find({ description: { $regex: word } })
         const products = await this.productsModel.find({ description: { $regex: new RegExp(`\\b${word}\\b`, "gi") } })
         return products
     }
