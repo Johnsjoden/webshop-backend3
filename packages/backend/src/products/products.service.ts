@@ -13,7 +13,7 @@ export class ProductsService {
     }
     async createProducts(): Promise<string> {
         const productss = [{
-            "description": "Bandyklubba",
+            "description": "A top of the line stick manufactured by Kosa for the practioners of sports bandy",
             "title": "Bandyklubba ",
             "image_url": "https://www.xxl.se/filespin/10464871ed6b4664a24986ab49625bc4?resize=1400,1400&quality=95&bgcolor=efefef",
             "category": "Sports",
@@ -22,8 +22,8 @@ export class ProductsService {
             "manufacturer": "Kosa"
         },
         {
-            "description": "A Samsung TV6",
-            "title": "New Samsung TV",
+            "description": "A Samsung TV6 with the newest features and electronics",
+            "title": "Samsung TV",
             "image_url": "https://www.elgiganten.se/image/dv_web_D180001002954480/431084/samsung-65-q60b-4k-qled-tv-2022--pdp_zoom-3000--pdp_main-960.jpg",
             "category": "Electronics",
             "weight": "30kg",
@@ -31,8 +31,8 @@ export class ProductsService {
             "manufacturer": "Samsung"
         },
         {
-            "description": "Fotboll",
-            "title": " FOTBOLL 222",
+            "description": "A Fotball manufactured by FIFA for the World Cup sports event in 2022",
+            "title": " FOTBALL 2022",
             "image_url": "https://plus.unsplash.com/premium_photo-1658506638118-524a66dc5cee?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8Zm9vdGJhbGx8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60",
             "category": "Sports",
             "weight": "1kg",
