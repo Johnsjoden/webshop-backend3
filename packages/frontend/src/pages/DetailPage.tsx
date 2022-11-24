@@ -63,7 +63,7 @@ export default function Detail() {
             const response = await axios.patch<any>("carts", productItem, { headers: { "Authorization": "Bearer " + token } })
             setCartProducts(response.data.cart.products)
         } catch (err) {
-            console.log(err)
+            navigate("/user/login")
         }
 
     }
@@ -83,7 +83,7 @@ export default function Detail() {
             await axios.patch<ProductItems>("/carts/registered", productItems, { headers: { "Authorization": "Bearer " + token } })
             navigate("/user/userinfo")
         } catch (err) {
-            setRegisterError("All userinformation needs to be updated first")
+            setRegisterError("All userinformation needs to be updated first, please go to Profile and fill in missing information")
         }
 
     }
